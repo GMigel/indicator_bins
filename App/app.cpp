@@ -11,7 +11,6 @@
 #include <array>
 #include <build_time.h>
 
-
 #if APP_DEBUG
 	#define debug_print rs422_printf
 #else
