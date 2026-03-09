@@ -1,20 +1,35 @@
 #include <app.h>
-#include <air_signals.h>
-#include <input_hal.h>
-#include <disp_bright_hal.h>
-#include <RotaryEncoder.h>
-#include <rs422_port.h>
-#include <can_port.h>
 #include <math.h>
 #include <gui.h>
 #include <cstdio>
 #include <array>
 #include <build_time.h>
+#include <air_signals.h>
+
+#ifndef PLATFORM_PC
+#include <input_hal.h>
+#include <disp_bright_hal.h>
+#include <RotaryEncoder.h>
+#include <rs422_port.h>
+#include <can_port.h>
+#endif
+
+#ifdef PLATFORM_PC
+
+void app_run() {};
+void app_on_timer() {};
+
+#else
 
 #if APP_DEBUG
-	#define debug_print rs422_printf
+#define debug_print rs422_printf
 #else
-  #define debug_print(...)
+#define debug_print(...)
+#endif
+
+#ifdef PLATFORM_PC
+void app_run() {};
+void app_on_timer() {};
 #endif
 
 using namespace std;
@@ -498,3 +513,4 @@ void good_icc_select(uint8_t item)
 //------------------------------------------------------------------------------
 
 
+#endif // PLATFORM_PC

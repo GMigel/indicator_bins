@@ -1,10 +1,13 @@
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
+#include "lvgl.h"
 #include "gui.h"
 
 int main()
 {
-    gui_state_t state;
+    lv_init();
 
+    gui_state_t state;
     gui_init(&state);
 
     while(1)

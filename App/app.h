@@ -6,8 +6,12 @@ extern "C"
 {
 #endif
 
+#ifndef PLATFORM_PC
 //#include "main.h"
 #include "fdcan.h"
+#endif
+
+#include <cstdint>
 
 //--------------------------------------
 // версия ПО

@@ -1,8 +1,13 @@
 #include "gui.h"
-#include "main.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "lv_port.h"
+#include "display_config.h"
+#include <math.h>
+
+#ifndef PLATFORM_PC
+#include "main.h"
+#endif
 
 #define PI      3.141592653f
 
@@ -506,8 +511,8 @@ void draw_foreground(float pitch, float roll, uint8_t is_pitch_valid, uint8_t is
     }
   }
 
-  static const lv_point_t triang_down[] = {{X0,Y0+R}, {X0-3,Y0+R-6}, {X0+3,Y0+R-6}, {X0,Y0+R}};
-  static const lv_point_t triang_up[]   = {{X0,Y0-R}, {X0-3,Y0-R+6}, {X0+3,Y0-R+6}, {X0,Y0-R}};
+  static lv_point_t triang_down[] = {{X0,Y0+R}, {X0-3,Y0+R-6}, {X0+3,Y0+R-6}, {X0,Y0+R}};
+  static lv_point_t triang_up[]   = {{X0,Y0-R}, {X0-3,Y0-R+6}, {X0+3,Y0-R+6}, {X0,Y0-R}};
   rect.bg_color = COLOR_WHITE;
   rect.bg_opa = LV_OPA_COVER;
   lv_canvas_draw_polygon(cvs_foreground, triang_down, 4, &rect);
