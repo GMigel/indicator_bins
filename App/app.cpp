@@ -100,7 +100,7 @@ static const char* good_icc_items[] = {"СОХРАНИТЬ","ОТМЕНА"};
 static gui_menu_t menu_good_icc = {nullptr, good_icc_items, 2, 0, good_icc_select};
 #endif
 
-/*static*/ /*gui_state_t*/ gui_state = {0.0f, };
+/*static*/ /*gui_state_t*/ /*gui_state = {0.0f, };*/ // defined in gui.h
 static RotaryEncoder encoder(enc_brg);
 static volatile uint32_t systime = 0;
 
