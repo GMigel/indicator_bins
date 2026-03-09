@@ -1,9 +1,8 @@
 /*
- * lv_port.h
- *
- *  Created on: Jul 20, 2023
- *      Author: Иван
+ * lv_port_pc.h
  */
+
+#pragma once
 
 #ifndef LV_PORT_H_
 #define LV_PORT_H_
@@ -17,10 +16,10 @@ extern "C" {
 
 #include "lvgl.h"
 
-
 /* Initialize low level display driver */
+void lv_port_pc_init(void);
 void lv_port_disp_init(void);
-
+void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p);
 
 #ifdef __cplusplus
 } /*extern "C"*/

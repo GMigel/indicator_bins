@@ -24,7 +24,11 @@
  *====================*/
 
 /*Color depth: 1 (1 byte per pixel), 8 (RGB332), 16 (RGB565), 32 (ARGB8888)*/
+#ifdef PLATFORM_PC
+#define LV_COLOR_DEPTH 32
+#else
 #define LV_COLOR_DEPTH 16
+#endif
 
 /*Swap the 2 bytes of RGB565 color. Useful if the display has an 8-bit interface (e.g. SPI)*/
 #define LV_COLOR_16_SWAP 0
@@ -48,22 +52,33 @@
 /*1: use custom malloc/free, 0: use the built-in `lv_mem_alloc()` and `lv_mem_free()`*/
 #define LV_MEM_CUSTOM 0
 #if LV_MEM_CUSTOM == 0
-    /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
-    #define LV_MEM_SIZE (288U * 1024U)          /*[bytes]*/
 
-    /*Set an address for the memory pool instead of allocating it as a normal array. Can be in external SRAM too.*/
-    #define LV_MEM_ADR 0x30000000    /*0: unused*/
-    /*Instead of an address give a memory allocator that will be called to get a memory pool for LVGL. E.g. my_malloc*/
+    /*Memory pool address*/
+    #ifdef PLATFORM_PC
+        /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
+        #define LV_MEM_SIZE (512U * 1024U)  /*[bytes]*/
+        /* PC simulator: use internal array */
+        #define LV_MEM_ADR 0
+    #else
+        /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
+        #define LV_MEM_SIZE (288U * 1024U) /*[bytes]*/
+        /* STM32H7 external SRAM */
+        #define LV_MEM_ADR 0x30000000
+    #endif
+
+    /*If LV_MEM_ADR == 0 LVGL will allocate static array*/
     #if LV_MEM_ADR == 0
         #undef LV_MEM_POOL_INCLUDE
         #undef LV_MEM_POOL_ALLOC
     #endif
 
 #else       /*LV_MEM_CUSTOM*/
-    #define LV_MEM_CUSTOM_INCLUDE <stdlib.h>   /*Header for the dynamic memory function*/
+
+    #define LV_MEM_CUSTOM_INCLUDE <stdlib.h>
     #define LV_MEM_CUSTOM_ALLOC   malloc
     #define LV_MEM_CUSTOM_FREE    free
     #define LV_MEM_CUSTOM_REALLOC realloc
+
 #endif     /*LV_MEM_CUSTOM*/
 
 /*Number of the intermediate memory buffer used during rendering and other internal processing mechanisms.

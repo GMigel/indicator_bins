@@ -77,6 +77,8 @@
 
 #define MODF(a,m)     ((a) - (m)*floorf((a)/(m)))
 
+gui_state_t gui_state;
+
 static lv_obj_t* cvs_background;
 static lv_obj_t* cvs_foreground;
 static lv_obj_t* cvs_hdng_scale;
