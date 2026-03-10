@@ -14,6 +14,7 @@ target_include_directories(app PUBLIC
     ${CMAKE_SOURCE_DIR}/GUI
     ${CMAKE_SOURCE_DIR}/lvgl
     ${CMAKE_SOURCE_DIR}/lvgl/src
+    ${CMAKE_SOURCE_DIR}/platform/common
 )
 # --- GUI ---
 file(GLOB_RECURSE GUI_SRC
@@ -29,6 +30,7 @@ add_library(gui STATIC
 target_include_directories(gui PUBLIC
     ${CMAKE_SOURCE_DIR}/GUI
     ${CMAKE_SOURCE_DIR}/platform/pc
+    ${CMAKE_SOURCE_DIR}/platform/common
 )
 
 target_link_libraries(gui
