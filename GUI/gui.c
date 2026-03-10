@@ -95,6 +95,7 @@ static lv_draw_rect_dsc_t rect;
 static lv_draw_label_dsc_t label;
 static lv_draw_line_dsc_t line;
 
+#ifndef PLATFORM_PC
 static uint8_t cvs_buf_background[LV_CANVAS_BUF_SIZE_TRUE_COLOR(MAX_X,MAX_Y)] __attribute__((section(".lvgl_ram")));
 static uint8_t cvs_buf_foreground[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(FOREGROUND_W,FOREGROUND_H)] __attribute__((section(".lvgl_ram")));
 static uint8_t cvs_buf_hdng_panel[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_HDNG_W,PANEL_HDNG_H)] __attribute__((section(".lvgl_ram")));
@@ -106,7 +107,19 @@ static uint8_t cvs_buf_pres[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_PRES_W,PANEL_PRE
 static uint8_t cvs_buf_alt[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_ALT_W,PANEL_ALT_H)] __attribute__((section(".lvgl_ram")));
 static uint8_t cvs_buf_ref[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_REF_W,PANEL_REF_H)] __attribute__((section(".lvgl_ram")));
 static uint8_t cvs_buf_msg_box[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_MSG_W,PANEL_MSG_H)] __attribute__((section(".lvgl_ram")));
-
+#else
+static uint8_t cvs_buf_background[LV_CANVAS_BUF_SIZE_TRUE_COLOR(MAX_X,MAX_Y)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_foreground[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(FOREGROUND_W,FOREGROUND_H)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_hdng_panel[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_HDNG_W,PANEL_HDNG_H)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_hdng_scale[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(SCALE_HDNG_W,SCALE_HDNG_H)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_speed_v[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_VSPD_W,PANEL_VSPD_H)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_speed[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_SPD_W,PANEL_SPD_H)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_plane[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PLANE_W,PLANE_H)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_pres[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_PRES_W,PANEL_PRES_H)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_alt[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_ALT_W,PANEL_ALT_H)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_ref[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_REF_W,PANEL_REF_H)] __attribute__((aligned(4)));
+static uint8_t cvs_buf_msg_box[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_MSG_W,PANEL_MSG_H)] __attribute__((aligned(4)));
+#endif
 //------------------------------------------------------------------------------
 static void init_cvs_speed_v(void);
 static void init_cvs_speed(void);
@@ -125,7 +138,7 @@ static void draw_heading(float heading, uint8_t is_heading_valid, uint8_t is_icc
 static void draw_pressure(float pressure, gui_mode_t mode, gui_unit_pres_t unit);
 static void draw_pres_ref(gui_type_pres_t type, gui_mode_t mode);
 static void view_message(const char* message);
-static void clear_message();
+static void clear_message(void);
 static uint32_t get_num_lines(const char* message)
 {
   uint32_t n = 1;
@@ -199,6 +212,7 @@ void gui_init(gui_state_t* state)
   memset(state, 0x0, sizeof(gui_state_t));
   state->pres_qfe = GUI_PRES_QNE;
   state->pres_qnh = GUI_PRES_QNE;
+  state->mode = GUI_INIT;
   gui_refresh(state);
 }
 //------------------------------------------------------------------------------
@@ -1053,7 +1067,7 @@ void view_message(const char* message)
 
 
 //------------------------------------------------------------------------------
-void clear_message(const char* message)
+void clear_message(void/*const char* message*/)
 {
   lv_obj_add_flag(cvs_msg_box, LV_OBJ_FLAG_HIDDEN);
 }

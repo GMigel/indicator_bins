@@ -7,7 +7,12 @@
 
 int main()
 {
-    printf("LV_MEM_SIZE=%d\n", LV_MEM_SIZE);
+    #ifdef LV_MEM_SIZE
+        printf("LV_MEM_SIZE=%d\n", LV_MEM_SIZE);
+    #else
+        printf("LVGL using system malloc\n");
+    #endif
+
     lv_init();
 
     /* Initialize SDL + LVGL display driver */

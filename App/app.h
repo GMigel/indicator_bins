@@ -9,9 +9,10 @@ extern "C"
 #ifndef PLATFORM_PC
 //#include "main.h"
 #include "fdcan.h"
+#else
+#include <cstdint>
 #endif
 
-#include <cstdint>
 
 //--------------------------------------
 // версия ПО

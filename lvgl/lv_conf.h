@@ -49,38 +49,49 @@
    MEMORY SETTINGS
  *=========================*/
 
-/*1: use custom malloc/free, 0: use the built-in `lv_mem_alloc()` and `lv_mem_free()`*/
-#define LV_MEM_CUSTOM 0
-#if LV_MEM_CUSTOM == 0
+/* 1: use custom malloc/free, 0: use the built-in LVGL allocator */
 
-    /*Memory pool address*/
-    #ifdef PLATFORM_PC
-        /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
-        #define LV_MEM_SIZE (512U * 1024U)  /*[bytes]*/
-        /* PC simulator: use internal array */
-        #define LV_MEM_ADR 0
-    #else
-        /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
-        #define LV_MEM_SIZE (288U * 1024U) /*[bytes]*/
-        /* STM32H7 external SRAM */
+#ifdef PLATFORM_PC
+
+    /* PC simulator: use system malloc to avoid TLSF alignment issues */
+    #define LV_MEM_CUSTOM 1
+
+    #if LV_MEM_CUSTOM
+        #define LV_MEM_CUSTOM_INCLUDE <stdlib.h>
+        #define LV_MEM_CUSTOM_ALLOC   malloc
+        #define LV_MEM_CUSTOM_FREE    free
+        #define LV_MEM_CUSTOM_REALLOC realloc
+    #endif
+
+#else   /* ================= STM32 ================= */
+
+    /* Embedded target: use LVGL internal memory pool */
+    #define LV_MEM_CUSTOM 0
+
+    #if LV_MEM_CUSTOM == 0
+
+        /* Size of LVGL memory pool (>= 2 kB) */
+        #define LV_MEM_SIZE (64U * 1024U)
+
+        /* External SRAM address for STM32H7 */
         #define LV_MEM_ADR 0x30000000
+
+        /* If LV_MEM_ADR == 0 LVGL will allocate static array */
+        #if LV_MEM_ADR == 0
+            #undef LV_MEM_POOL_INCLUDE
+            #undef LV_MEM_POOL_ALLOC
+        #endif
+
+    #else
+
+        #define LV_MEM_CUSTOM_INCLUDE <stdlib.h>
+        #define LV_MEM_CUSTOM_ALLOC   malloc
+        #define LV_MEM_CUSTOM_FREE    free
+        #define LV_MEM_CUSTOM_REALLOC realloc
+
     #endif
 
-    /*If LV_MEM_ADR == 0 LVGL will allocate static array*/
-    #if LV_MEM_ADR == 0
-        #undef LV_MEM_POOL_INCLUDE
-        #undef LV_MEM_POOL_ALLOC
-    #endif
-
-#else       /*LV_MEM_CUSTOM*/
-
-    #define LV_MEM_CUSTOM_INCLUDE <stdlib.h>
-    #define LV_MEM_CUSTOM_ALLOC   malloc
-    #define LV_MEM_CUSTOM_FREE    free
-    #define LV_MEM_CUSTOM_REALLOC realloc
-
-#endif     /*LV_MEM_CUSTOM*/
-
+#endif /* PLATFORM_PC */
 /*Number of the intermediate memory buffer used during rendering and other internal processing mechanisms.
  *You will see an error log message if there wasn't enough buffers. */
 #define LV_MEM_BUF_MAX_NUM 16
