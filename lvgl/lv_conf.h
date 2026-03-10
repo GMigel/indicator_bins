@@ -19,6 +19,8 @@
 
 #include <stdint.h>
 
+#define PLATFORM_PC
+
 /*====================
    COLOR SETTINGS
  *====================*/
