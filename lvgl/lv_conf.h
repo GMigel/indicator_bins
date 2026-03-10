@@ -74,7 +74,7 @@
         /* Size of LVGL memory pool (>= 2 kB) */
         #define LV_MEM_SIZE (128U * 1024U)
 
-        /* External SRAM address for STM32H7 */
+        /* External SDRAM address for STM32H7 */
         #define LV_MEM_ADR 0x30000000
 
         /* If LV_MEM_ADR == 0 LVGL will allocate static array */
@@ -95,7 +95,7 @@
 #endif /* PLATFORM_PC */
 /*Number of the intermediate memory buffer used during rendering and other internal processing mechanisms.
  *You will see an error log message if there wasn't enough buffers. */
-#define LV_MEM_BUF_MAX_NUM 16
+#define LV_MEM_BUF_MAX_NUM 8
 
 /*Use the standard `memcpy` and `memset` instead of LVGL's own functions. (Might or might not be faster).*/
 #define LV_MEMCPY_MEMSET_STD 0
@@ -163,7 +163,7 @@
  * "Transformed layers" (where transform_angle/zoom properties are used) use larger buffers
  * and can't be drawn in chunks. So these settings affects only widgets with opacity.
  */
-#define LV_LAYER_SIMPLE_BUF_SIZE          (16U * 1024U)
+#define LV_LAYER_SIMPLE_BUF_SIZE          (32U * 1024U)
 #define LV_LAYER_SIMPLE_FALLBACK_BUF_SIZE (16U * 1024U)
 
 /*Default image cache size. Image caching keeps the images opened.
@@ -257,7 +257,8 @@
  *-----------*/
 
 /*Enable the log module*/
-#define LV_USE_LOG 0
+#define LV_USE_LOG 1
+
 #if LV_USE_LOG
 
     /*How important log should be added:
@@ -269,11 +270,11 @@
     *LV_LOG_LEVEL_NONE        Do not log anything*/
     #define LV_LOG_LEVEL LV_LOG_LEVEL_WARN
 
-    /*1: Print the log with 'printf';
-    *0: User need to register a callback with `lv_log_register_print_cb()`*/
-    #define LV_LOG_PRINTF 0
+    /*1: Print the log with 'printf'
+    *0: User needs to register a callback with `lv_log_register_print_cb()`*/
+    #define LV_LOG_PRINTF 1
 
-    /*Enable/disable LV_LOG_TRACE in modules that produces a huge number of logs*/
+    /*Enable/disable LV_LOG_TRACE in modules that produce many logs*/
     #define LV_LOG_TRACE_MEM        1
     #define LV_LOG_TRACE_TIMER      1
     #define LV_LOG_TRACE_INDEV      1
@@ -283,7 +284,7 @@
     #define LV_LOG_TRACE_LAYOUT     1
     #define LV_LOG_TRACE_ANIM       1
 
-#endif  /*LV_USE_LOG*/
+#endif /*LV_USE_LOG*/
 
 /*-------------
  * Asserts
