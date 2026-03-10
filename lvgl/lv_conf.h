@@ -12,7 +12,8 @@
  */
 
 /* clang-format off */
-#if 1 /*Set it to "1" to enable content*/
+
+// #if 1 /*Set it to "1" to enable content*/
 
 #ifndef LV_CONF_H
 #define LV_CONF_H
@@ -20,6 +21,7 @@
 #include <stdint.h>
 
 #define PLATFORM_PC
+/* PLATFORM_PC will be defined by the build system (CMake) */
 
 /*====================
    COLOR SETTINGS
@@ -799,4 +801,4 @@
 
 #endif /*LV_CONF_H*/
 
-#endif /*End of "Content enable"*/
+// #endif /*End of "Content enable"*/

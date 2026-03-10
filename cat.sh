@@ -4,10 +4,10 @@
 #cat CMakeLists.txt
 #echo GUI/CMakeLists.txt
 #cat GUI/CMakeLists.txt
-echo GUI/gui.c
-cat GUI/gui.c
-echo GUI/gui.h
-cat GUI/gui.h
+#echo GUI/gui.c
+#cat GUI/gui.c
+#echo GUI/gui.h
+#cat GUI/gui.h
 #echo lvgl/CMakeLists.txt
 #cat lvgl/CMakeLists.txt
 #echo lvgl/lv_port_stm32.c
@@ -28,8 +28,16 @@ cat GUI/gui.h
 #cat platform/pc/lv_port_pc.c
 #echo platform/pc/lv_port_pc.h
 #cat platform/pc/lv_port_pc.h
-echo App/app.cpp
-cat App/app.cpp
-echo App/app.h
-cat App/app.h
+#echo App/app.cpp
+#cat App/app.cpp
+#echo App/app.h
+#cat App/app.h
 
+echo CMakeLists.txt
+cat CMakeLists.txt
+echo platform/pc/CMakeLists.txt
+cat platform/pc/CMakeLists.txt
+echo lvgl/lvgl.h
+cat lvgl/lvgl.h
+echo lvgl/lv_conf.h
+cat lvgl/lv_conf.h

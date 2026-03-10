@@ -13,6 +13,12 @@ int main()
         printf("LVGL using system malloc\n");
     #endif
 
+    #ifdef PLATFORM_PC
+        printf("Running on PC platform\n");
+    #else
+        printf("Running on embedded platform STM32\n");
+    #endif
+
     lv_init();
 
     /* Initialize SDL + LVGL display driver */
