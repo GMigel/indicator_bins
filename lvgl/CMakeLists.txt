@@ -4,9 +4,12 @@ file(GLOB_RECURSE LVGL_SRC
 
 set(LV_PORT_FILE)
 
-#if(BUILD_PC_SIM)
-#    set(LV_PORT_FILE lv_port_pc.c)
-#endif()
+if(BUILD_PC_SIM)
+    #set(LV_PORT_FILE lv_port_pc.c)
+#    add_library(lvgl
+#    ../platform/pc/lv_port_pc.c
+#)
+endif()
 
 if(BUILD_STM32)
     set(LV_PORT_FILE lv_port_stm32.c)
@@ -25,4 +28,12 @@ target_include_directories(lvgl PUBLIC
 
 target_compile_definitions(lvgl PUBLIC
     LV_CONF_INCLUDE_SIMPLE
+#    PLATFORM_PC
 )
+
+if(BUILD_PC_SIM)
+target_compile_definitions(lvgl PUBLIC
+#    LV_CONF_INCLUDE_SIMPLE
+    PLATFORM_PC
+)
+endif()

@@ -20,7 +20,7 @@
 
 #include <stdint.h>
 
-#define PLATFORM_PC
+// #define PLATFORM_PC
 /* PLATFORM_PC will be defined by the build system (CMake) */
 
 /*====================
