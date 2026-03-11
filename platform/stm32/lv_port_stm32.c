@@ -6,6 +6,7 @@
  */
 
 #include "lv_port.h"
+#include "display_config.h"
 #include "ltdc.h"
 
 static uint8_t display_buf[2][DISP_HOR_RES*DISP_VER_RES*2] __attribute__ ((section(".video_ram")));
