@@ -1,7 +1,8 @@
 #include <can_port.h>
 #include <can_messages.h>
 #include <map>
-#include <app.h>
+
+#include "../../app/app.h"
 
 
 using namespace std;

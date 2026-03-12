@@ -1,4 +1,5 @@
-#include "gui.h"
+#include "../gui/gui.h"
+
 #include "stdio.h"
 #include "stdlib.h"
 #include "lv_port.h"

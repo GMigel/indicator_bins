@@ -1,10 +1,12 @@
-#include <app.h>
+#include "../app/app.h"
+
 #include <math.h>
-#include <gui.h>
 #include <cstdio>
 #include <array>
-#include <build_time.h>
-#include <air_signals.h>
+
+#include "../app/air_signals.h"
+#include "../app/build_time.h"
+#include "../gui/gui.h"
 
 #ifndef PLATFORM_PC
 #include <input_hal.h>
