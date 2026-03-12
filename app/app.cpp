@@ -1,12 +1,19 @@
 #include "../app/app.h"
+#include "../gui/gui.h"
 
 #include <math.h>
-#include <cstdio>
+// #include <cstdio>
 #include <array>
 
 #include "../app/air_signals.h"
 #include "../app/build_time.h"
-#include "../gui/gui.h"
+
+#ifdef PLATFORM_PC
+#include <cstdint>
+#include <cstdio>
+#else
+// #include "stm32fxxx_hal.h"
+#endif
 
 #ifndef PLATFORM_PC
 #include <input_hal.h>
@@ -17,10 +24,8 @@
 #endif
 
 #ifdef PLATFORM_PC
-
 void app_run() {};
 void app_on_timer() {};
-
 #else
 
 #if APP_DEBUG
@@ -41,32 +46,13 @@ using namespace std;
 static void dummy_hold() {debug_print("dummy hold\r");};
 static void dummy_timeout() {debug_print("dummy timeout\r");};
 
-static void brg_rotate(int8_t delta);
-static void brg_click();
-static void brg_hold();
-
-static void ref_rotate(int8_t delta);
-static void ref_click();
-
-static void pres_rotate(int8_t delta);
-static void pres_click();
-
-static void	menu_rotate(int8_t delta);
-static void menu_click();
-static void menu_hold();
-static void menu_timeout();
-static void	menu_select(uint8_t item);
-static void	pres_select(uint8_t item);
-static void	alt_select(uint8_t item);
-static void	ver_select(uint8_t item);
 #if USE_MTI_ICC
 static void	icc_select(uint8_t item);
 static void	bad_icc_select(uint8_t item);
 static void	good_icc_select(uint8_t item);
 #endif
+
 static void can_serve();
-
-
 
 static RotaryEncoder::listener_t enc_brg = {brg_rotate, brg_click, brg_hold, dummy_timeout};
 static RotaryEncoder::listener_t enc_ref = {ref_rotate, ref_click, dummy_hold, dummy_timeout};

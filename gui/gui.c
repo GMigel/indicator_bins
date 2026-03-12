@@ -727,11 +727,19 @@ void draw_pressure(float pressure, gui_mode_t mode, gui_unit_pres_t unit)
   {
   case GUI_MERC:
     p = (int)roundf(pressure/133.32f);
+#ifdef PLATFORM_PC
     sprintf(text,"Рз %3u",p);
+#else
+    sprintf(text,"Рз %3lu",p);
+#endif
     break;
   case GUI_PASC:
     p = (int)roundf(pressure/10.0f);
+#ifdef PLATFORM_PC
     sprintf(text,"%4u.%u",p/10,p%10);
+#else
+    sprintf(text,"%4lu.%lu",p/10,p%10);
+#endif
     break;
   }
 
