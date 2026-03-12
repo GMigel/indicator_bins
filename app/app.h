@@ -21,6 +21,10 @@ const uint8_t MinVersion = 1;
 const uint8_t Build = 1;
 //--------------------------------------
 
+#define PI			3.141592653f
+
+//--------------------------------------
+
 void app_run(void);
 void app_on_timer(void);
 
