@@ -4,12 +4,12 @@ find_package(SDL2 REQUIRED)
 
 # --- App ---
 add_library(app STATIC
-    ${CMAKE_SOURCE_DIR}/App/app.cpp
+    ${CMAKE_SOURCE_DIR}/app/app.cpp
 )
 
 target_include_directories(app PUBLIC
-    ${CMAKE_SOURCE_DIR}/App
-    ${CMAKE_SOURCE_DIR}/GUI
+    ${CMAKE_SOURCE_DIR}/app
+    ${CMAKE_SOURCE_DIR}/gui
     ${CMAKE_SOURCE_DIR}/lvgl
     ${CMAKE_SOURCE_DIR}/lvgl/src
     ${CMAKE_SOURCE_DIR}/platform/common
@@ -17,7 +17,7 @@ target_include_directories(app PUBLIC
 
 # --- GUI ---
 file(GLOB_RECURSE GUI_SRC
-    ${CMAKE_SOURCE_DIR}/GUI/*.c
+    ${CMAKE_SOURCE_DIR}/gui/*.c
 )
 
 add_library(gui STATIC
@@ -26,7 +26,7 @@ add_library(gui STATIC
 )
 
 target_include_directories(gui PUBLIC
-    ${CMAKE_SOURCE_DIR}/GUI
+    ${CMAKE_SOURCE_DIR}/gui
     ${CMAKE_SOURCE_DIR}/platform/pc
     ${CMAKE_SOURCE_DIR}/platform/common
 )

@@ -13,8 +13,8 @@ add_compile_definitions(LV_CONF_INCLUDE_SIMPLE)
 include_directories(${CMAKE_SOURCE_DIR}/lvgl)
 
 add_subdirectory(lvgl)
-add_subdirectory(App)
-add_subdirectory(GUI)
+add_subdirectory(app)
+add_subdirectory(gui)
 
 if(BUILD_PC_SIM)
     add_subdirectory(platform/pc)
