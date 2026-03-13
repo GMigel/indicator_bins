@@ -1,4 +1,6 @@
 #include "app.h"
+#include "app_cpp.h"
+#include "main.h"
 
 #include <math.h>
 #include <cstdio>
@@ -12,6 +14,9 @@
 #include "disp_bright_hal.h"
 #include "input_hal.h"
 #include "rs422_port.h"
+#include "fdcan.h"
+
+using std::array;
 
 #if APP_DEBUG
 	#define debug_print rs422_printf
@@ -19,75 +24,73 @@
   #define debug_print(...)
 #endif
 
-using namespace std;
+// using namespace std;
 
-static void dummy_hold() {debug_print("dummy hold\r");};
-static void dummy_timeout() {debug_print("dummy timeout\r");};
+// void dummy_hold() {debug_print("dummy hold\r");};
+// void dummy_timeout() {debug_print("dummy timeout\r");};
 
-static void brg_rotate(int8_t delta);
-static void brg_click();
-static void brg_hold();
+// static void brg_rotate(int8_t delta);
+// static void brg_click();
+// static void brg_hold();
 
-static void ref_rotate(int8_t delta);
-static void ref_click();
+// static void ref_rotate(int8_t delta);
+// static void ref_click();
 
-static void pres_rotate(int8_t delta);
-static void pres_click();
+// static void pres_rotate(int8_t delta);
+// static void pres_click();
 
-static void	menu_rotate(int8_t delta);
-static void menu_click();
-static void menu_hold();
-static void menu_timeout();
-static void	menu_select(uint8_t item);
-static void	pres_select(uint8_t item);
-static void	alt_select(uint8_t item);
-static void	ver_select(uint8_t item);
-#if USE_MTI_ICC
-static void	icc_select(uint8_t item);
-static void	bad_icc_select(uint8_t item);
-static void	good_icc_select(uint8_t item);
-#endif
-static void can_serve();
+// static void	menu_rotate(int8_t delta);
+// static void menu_click();
+// static void menu_hold();
+// static void menu_timeout();
+// static void	menu_select(uint8_t item);
+// static void	pres_select(uint8_t item);
+// static void	alt_select(uint8_t item);
+// static void	ver_select(uint8_t item);
+// #if USE_MTI_ICC
+// static void	icc_select(uint8_t item);
+// static void	bad_icc_select(uint8_t item);
+// static void	good_icc_select(uint8_t item);
+// #endif
+// static void can_serve();
 
+// RotaryEncoder::listener_t enc_brg = {brg_rotate, brg_click, brg_hold, dummy_timeout};
+// RotaryEncoder::listener_t enc_ref = {ref_rotate, ref_click, dummy_hold, dummy_timeout};
+// RotaryEncoder::listener_t enc_pres = {pres_rotate, pres_click, dummy_hold, dummy_timeout};
+// RotaryEncoder::listener_t enc_menu = {menu_rotate, menu_click, menu_hold, menu_timeout};
+// RotaryEncoder::listener_t enc_menu_timeless = {menu_rotate, menu_click, menu_hold, dummy_timeout};
 
+// #if USE_MTI_ICC
+// static const char* main_menu_items[] = {"ЕД. ИЗМ. ДАВЛЕНИЯ","ЕД. ИЗМ. ВЫСОТЫ", "КАЛИБРОВКА КОМПАСА", "ВЕРСИЯ"};
+// static gui_menu_t menu_main = {NULL, main_menu_items, 4, 0, menu_select};
+// #else
+// static const char* main_menu_items[] = {"ЕД. ИЗМ. ДАВЛЕНИЯ","ЕД. ИЗМ. ВЫСОТЫ", "ВЕРСИЯ"};
+// static gui_menu_t menu_main = {NULL, main_menu_items, 3, 0, menu_select};
+// #endif
 
-static RotaryEncoder::listener_t enc_brg = {brg_rotate, brg_click, brg_hold, dummy_timeout};
-static RotaryEncoder::listener_t enc_ref = {ref_rotate, ref_click, dummy_hold, dummy_timeout};
-static RotaryEncoder::listener_t enc_pres = {pres_rotate, pres_click, dummy_hold, dummy_timeout};
-static RotaryEncoder::listener_t enc_menu = {menu_rotate, menu_click, menu_hold, menu_timeout};
-static RotaryEncoder::listener_t enc_menu_timeless = {menu_rotate, menu_click, menu_hold, dummy_timeout};
+// static const char* pres_items[] = {"мм. рт. ст","гПа"};
+// static gui_menu_t menu_pres = {"ЕДИНИЦЫ ДАВЛЕНИЯ", pres_items, 2, 0, pres_select};
 
-#if USE_MTI_ICC
-static const char* main_menu_items[] = {"ЕД. ИЗМ. ДАВЛЕНИЯ","ЕД. ИЗМ. ВЫСОТЫ", "КАЛИБРОВКА КОМПАСА", "ВЕРСИЯ"};
-static gui_menu_t menu_main = {NULL, main_menu_items, 4, 0, menu_select};
-#else
-static const char* main_menu_items[] = {"ЕД. ИЗМ. ДАВЛЕНИЯ","ЕД. ИЗМ. ВЫСОТЫ", "ВЕРСИЯ"};
-static gui_menu_t menu_main = {NULL, main_menu_items, 3, 0, menu_select};
-#endif
+// static const char* alt_items[] = {"метры","футы"};
+// static gui_menu_t menu_alt = {"ЕДИНИЦЫ ВЫСОТЫ", alt_items, 2, 0, alt_select};
 
-static const char* pres_items[] = {"мм. рт. ст","гПа"};
-static gui_menu_t menu_pres = {"ЕДИНИЦЫ ДАВЛЕНИЯ", pres_items, 2, 0, pres_select};
+// static const char* ver_items[] = {"ПО БИНС: -","ПО МФИ: 0.5", "ЗАГРУЗЧИК БИНС: -", "ЗАГРУЗЧИК МФИ: -"};
+// static gui_menu_t menu_ver = {"ВЕРСИЯ", ver_items, 4, 0, ver_select};
 
-static const char* alt_items[] = {"метры","футы"};
-static gui_menu_t menu_alt = {"ЕДИНИЦЫ ВЫСОТЫ", alt_items, 2, 0, alt_select};
+// #if USE_MTI_ICC
+// static const char* icc_items[] = {"вкл","выкл"};
+// static gui_menu_t menu_icc = {"КАЛИБРОВКА КОМПАСА", icc_items, 2, 0, icc_select};
 
-static const char* ver_items[] = {"ПО БИНС: -","ПО МФИ: 0.5", "ЗАГРУЗЧИК БИНС: -", "ЗАГРУЗЧИК МФИ: -"};
-static gui_menu_t menu_ver = {"ВЕРСИЯ", ver_items, 4, 0, ver_select};
+// static const char* bad_icc_items[] = {"ОК"};
+// static gui_menu_t menu_bad_icc = {"НЕДОСТАТОЧНО ДАННЫХ\rДЛЯ КАЛИБРОВКИ", bad_icc_items, 1, 0, bad_icc_select};
 
-#if USE_MTI_ICC
-static const char* icc_items[] = {"вкл","выкл"};
-static gui_menu_t menu_icc = {"КАЛИБРОВКА КОМПАСА", icc_items, 2, 0, icc_select};
+// static const char* good_icc_items[] = {"СОХРАНИТЬ","ОТМЕНА"};
+// static gui_menu_t menu_good_icc = {nullptr, good_icc_items, 2, 0, good_icc_select};
+// #endif
 
-static const char* bad_icc_items[] = {"ОК"};
-static gui_menu_t menu_bad_icc = {"НЕДОСТАТОЧНО ДАННЫХ\rДЛЯ КАЛИБРОВКИ", bad_icc_items, 1, 0, bad_icc_select};
-
-static const char* good_icc_items[] = {"СОХРАНИТЬ","ОТМЕНА"};
-static gui_menu_t menu_good_icc = {nullptr, good_icc_items, 2, 0, good_icc_select};
-#endif
-
-static gui_state_t gui_state = {0.0f, };
-static RotaryEncoder encoder(enc_brg);
-static volatile uint32_t systime = 0;
+// gui_state_t gui_state = {0.0f, };
+// RotaryEncoder encoder(enc_brg);
+// volatile uint32_t systime = 0;
 
 //------------------------------------------------------------------------------
 void app_run()
@@ -127,10 +130,10 @@ void app_run()
 
 
 //------------------------------------------------------------------------------
-static void can_serve()
+void can_serve()
 {
-  static array<uint32_t, CAN_TOTAL_BUFNR> rx_time {}; // initialized by zeros
-  static array<float, CAN_TOTAL_BUFNR> rx_val {};
+  static std::array<uint32_t, CAN_TOTAL_BUFNR> rx_time {}; // initialized by zeros
+  static std::array<float, CAN_TOTAL_BUFNR> rx_val {};
   enum
   {
     ATTITUDE_TIMEOUT = 100,
@@ -238,8 +241,10 @@ void app_on_timer()
 			test_timeot--;
 	}
 
-  rs422_serve();
-	lv_tick_inc(HAL_TICK_FREQ_DEFAULT);
+    rs422_serve();
+//	lv_tick_inc(HAL_TICK_FREQ_DEFAULT); //ToDo
+    lv_tick_inc(1); // LVGL ожидает миллисекунды.
+//    lv_tick_inc(10); // если таймер 10 ms:
 	encoder.serve_input(input_get_enc(), input_get_btn());
 
 #if 1

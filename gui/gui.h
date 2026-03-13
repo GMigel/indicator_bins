@@ -1,5 +1,4 @@
-#ifndef GUI_H_
-#define GUI_H_
+#pragma once
 
 #ifdef __cplusplus
 #pragma GCC diagnostic push
@@ -64,5 +63,3 @@ void gui_refresh(const gui_state_t* state);
 #ifdef __cplusplus
 } // extern "C"
 #endif
-
-#endif /* GUI_H_ */
