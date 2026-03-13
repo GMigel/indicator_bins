@@ -17,9 +17,9 @@ add_subdirectory(app)
 add_subdirectory(gui)
 
 if(BUILD_PC_SIM)
-    add_subdirectory(platform/pc)
+    add_subdirectory(app/pc)
 endif()
 
 if(BUILD_STM32)
-    add_subdirectory(platform/stm32)
+    add_subdirectory(app/stm32)
 endif()

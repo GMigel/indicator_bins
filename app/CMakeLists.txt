@@ -3,20 +3,21 @@
 #    *.c
 #)
 
-add_library(app STATIC)
-
-target_sources(app PRIVATE
-    app_common.cpp
+add_library(app STATIC
+    common/app_common.cpp
 )
 
+target_include_directories(app PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/common
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries(app PUBLIC gui)
+
 if(BUILD_PC_SIM)
-    target_sources(app PRIVATE app_pc.cpp)
+    target_sources(app PRIVATE pc/app_pc.cpp)
 endif()
 
 if(BUILD_STM32)
-    target_sources(app PRIVATE app_stm32.cpp)
+    target_sources(app PRIVATE stm32/app_stm32.cpp)
 endif()
-
-target_include_directories(app PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)

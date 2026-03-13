@@ -32,8 +32,7 @@
 /* USER CODE BEGIN Includes */
 #include "W9864G6KH.h"
 #include "stdbool.h"
-
-#include "../../app/app.h"
+#include "app.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

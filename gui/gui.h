@@ -58,7 +58,6 @@ typedef struct
 	gui_unit_alt_t alt_unit;
 } gui_state_t;
 
-extern gui_state_t gui_state;
 void gui_init(gui_state_t* state);
 void gui_refresh(const gui_state_t* state);
 

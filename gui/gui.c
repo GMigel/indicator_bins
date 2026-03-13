@@ -1,14 +1,8 @@
-#include "../gui/gui.h"
-
+#include <math.h>
+#include "gui.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "lv_port.h"
-#include "display_config.h"
-#include <math.h>
-
-#ifndef PLATFORM_PC
-#include "main.h"
-#endif
 
 #define PI      3.141592653f
 
@@ -78,8 +72,6 @@
 
 #define MODF(a,m)     ((a) - (m)*floorf((a)/(m)))
 
-gui_state_t gui_state = {0.0f, };
-
 static lv_obj_t* cvs_background;
 static lv_obj_t* cvs_foreground;
 static lv_obj_t* cvs_hdng_scale;
@@ -96,7 +88,6 @@ static lv_draw_rect_dsc_t rect;
 static lv_draw_label_dsc_t label;
 static lv_draw_line_dsc_t line;
 
-#ifndef PLATFORM_PC
 static uint8_t cvs_buf_background[LV_CANVAS_BUF_SIZE_TRUE_COLOR(MAX_X,MAX_Y)] __attribute__((section(".lvgl_ram")));
 static uint8_t cvs_buf_foreground[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(FOREGROUND_W,FOREGROUND_H)] __attribute__((section(".lvgl_ram")));
 static uint8_t cvs_buf_hdng_panel[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_HDNG_W,PANEL_HDNG_H)] __attribute__((section(".lvgl_ram")));
@@ -108,19 +99,7 @@ static uint8_t cvs_buf_pres[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_PRES_W,PANEL_PRE
 static uint8_t cvs_buf_alt[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_ALT_W,PANEL_ALT_H)] __attribute__((section(".lvgl_ram")));
 static uint8_t cvs_buf_ref[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_REF_W,PANEL_REF_H)] __attribute__((section(".lvgl_ram")));
 static uint8_t cvs_buf_msg_box[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_MSG_W,PANEL_MSG_H)] __attribute__((section(".lvgl_ram")));
-#else
-static uint8_t cvs_buf_background[LV_CANVAS_BUF_SIZE_TRUE_COLOR(MAX_X,MAX_Y)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_foreground[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(FOREGROUND_W,FOREGROUND_H)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_hdng_panel[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_HDNG_W,PANEL_HDNG_H)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_hdng_scale[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(SCALE_HDNG_W,SCALE_HDNG_H)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_speed_v[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_VSPD_W,PANEL_VSPD_H)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_speed[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_SPD_W,PANEL_SPD_H)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_plane[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PLANE_W,PLANE_H)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_pres[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_PRES_W,PANEL_PRES_H)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_alt[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_ALT_W,PANEL_ALT_H)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_ref[LV_CANVAS_BUF_SIZE_TRUE_COLOR_ALPHA(PANEL_REF_W,PANEL_REF_H)] __attribute__((aligned(4)));
-static uint8_t cvs_buf_msg_box[LV_CANVAS_BUF_SIZE_TRUE_COLOR(PANEL_MSG_W,PANEL_MSG_H)] __attribute__((aligned(4)));
-#endif
+
 //------------------------------------------------------------------------------
 static void init_cvs_speed_v(void);
 static void init_cvs_speed(void);
@@ -139,7 +118,7 @@ static void draw_heading(float heading, uint8_t is_heading_valid, uint8_t is_icc
 static void draw_pressure(float pressure, gui_mode_t mode, gui_unit_pres_t unit);
 static void draw_pres_ref(gui_type_pres_t type, gui_mode_t mode);
 static void view_message(const char* message);
-static void clear_message(void);
+static void clear_message();
 static uint32_t get_num_lines(const char* message)
 {
   uint32_t n = 1;
@@ -213,7 +192,6 @@ void gui_init(gui_state_t* state)
   memset(state, 0x0, sizeof(gui_state_t));
   state->pres_qfe = GUI_PRES_QNE;
   state->pres_qnh = GUI_PRES_QNE;
-  state->mode = GUI_INIT;
   gui_refresh(state);
 }
 //------------------------------------------------------------------------------
@@ -528,8 +506,8 @@ void draw_foreground(float pitch, float roll, uint8_t is_pitch_valid, uint8_t is
     }
   }
 
-  static lv_point_t triang_down[] = {{X0,Y0+R}, {X0-3,Y0+R-6}, {X0+3,Y0+R-6}, {X0,Y0+R}};
-  static lv_point_t triang_up[]   = {{X0,Y0-R}, {X0-3,Y0-R+6}, {X0+3,Y0-R+6}, {X0,Y0-R}};
+  static const lv_point_t triang_down[] = {{X0,Y0+R}, {X0-3,Y0+R-6}, {X0+3,Y0+R-6}, {X0,Y0+R}};
+  static const lv_point_t triang_up[]   = {{X0,Y0-R}, {X0-3,Y0-R+6}, {X0+3,Y0-R+6}, {X0,Y0-R}};
   rect.bg_color = COLOR_WHITE;
   rect.bg_opa = LV_OPA_COVER;
   lv_canvas_draw_polygon(cvs_foreground, triang_down, 4, &rect);
@@ -727,19 +705,11 @@ void draw_pressure(float pressure, gui_mode_t mode, gui_unit_pres_t unit)
   {
   case GUI_MERC:
     p = (int)roundf(pressure/133.32f);
-#ifdef PLATFORM_PC
-    sprintf(text,"Рз %3u",p);
-#else
     sprintf(text,"Рз %3lu",p);
-#endif
     break;
   case GUI_PASC:
     p = (int)roundf(pressure/10.0f);
-#ifdef PLATFORM_PC
-    sprintf(text,"%4u.%u",p/10,p%10);
-#else
-    sprintf(text,"%4lu.%lu",p/10,p%10);
-#endif
+    sprintf(text,"%4lu.%1lu",p/10,p%10);
     break;
   }
 
@@ -1076,7 +1046,7 @@ void view_message(const char* message)
 
 
 //------------------------------------------------------------------------------
-void clear_message(void/*const char* message*/)
+void clear_message(const char* message)
 {
   lv_obj_add_flag(cvs_msg_box, LV_OBJ_FLAG_HIDDEN);
 }
