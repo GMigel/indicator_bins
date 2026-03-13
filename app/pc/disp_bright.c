@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include "disp_bright.h"
+
 void disp_bright_init(void) {
 }
 
