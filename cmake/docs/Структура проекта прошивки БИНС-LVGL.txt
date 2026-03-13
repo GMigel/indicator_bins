@@ -1,0 +1,948 @@
+├── App - Директория прикладного уровня (LVGL приложение и вспомогательные модули периферии).
+│   ├── CBuf.h              Буфер кольцевого типа (Circular Buffer).
+│   ├── CMakeLists.txt      Файл сборки CMake для модуля App.
+│   ├── RotaryEncoder.h     Интерфейс работы с инкрементальным энкодером.
+│   ├── W9864G6KH.c         Драйвер м/сх SDRAM W9864G6KH 64Mbit (8 MByte).
+│   ├── W9864G6KH.h         Заголовочный файл драйвера SDRAM W9864G6KH.
+│   ├── air_signals.h       Определения и структуры сигналов системы.
+│   ├── app.cpp             Основной файл приложения LVGL, содержит также функции коммуникаций и интерфейса.
+│   ├── app.h               Заголовочный файл основного модуля приложения.
+│   ├── build_time.h        Определение времени сборки прошивки.
+│   ├── can_messages.h      Описание форматов сообщений CAN.
+│   ├── can_port.cpp        Реализация интерфейса CAN.
+│   ├── can_port.h          Заголовочный файл интерфейса CAN.
+│   ├── disp_bright_hal.h   Интерфейс управления яркостью дисплея.
+│   ├── input_hal.h         Абстракция устройств ввода.
+│   ├── pres2alt.h          Преобразование давления в высоту.
+│   ├── rs422_port.cpp      Реализация интерфейса RS-422.
+│   └── rs422_port.h        Заголовочный файл интерфейса RS-422.
+├── CMakeLists.txt          Основной файл конфигурации сборки проекта (CMake).
+├── Core - Ядро проекта (инициализация MCU и периферии STM32).
+│   ├── Inc - Заголовочные файлы и интерфейсы периферии.
+│   │   ├── fdcan.h         Интерфейс контроллера FDCAN.
+│   │   ├── fmc.h           Интерфейс контроллера внешней памяти FMC.
+│   │   ├── gpio.h          Интерфейс работы с GPIO.
+│   │   ├── i2c.h           Интерфейс шины I2C.
+│   │   ├── ltdc.h          Интерфейс контроллера LCD-TFT.
+│   │   ├── main.h          Общие определения основного модуля.
+│   │   ├── memorymap.h     Описание карты памяти проекта.
+│   │   ├── spi.h           Интерфейс SPI.
+│   │   ├── stm32h7xx_hal_conf.h Конфигурация HAL библиотеки.
+│   │   ├── stm32h7xx_it.h  Заголовки обработчиков прерываний.
+│   │   ├── tim.h           Интерфейс таймеров.
+│   │   └── usart.h         Интерфейс USART/UART.
+│   │
+│   ├── Src - Реализация инициализации и работы периферии.
+│   │   ├── fdcan.c         Инициализация и обработка FDCAN.
+│   │   ├── fmc.c           Инициализация контроллера внешней памяти.
+│   │   ├── gpio.c          Инициализация GPIO.
+│   │   ├── i2c.c           Инициализация интерфейса I2C.
+│   │   ├── ltdc.c          Инициализация контроллера LCD-TFT.
+│   │   ├── main.c          Точка входа программы.
+│   │   ├── memorymap.c     Реализация карты памяти.
+│   │   ├── spi.c           Инициализация SPI.
+│   │   ├── stm32h7xx_hal_msp.c Низкоуровневая инициализация HAL.
+│   │   ├── stm32h7xx_hal_timebase_tim.c Реализация системного таймера HAL.
+│   │   ├── stm32h7xx_it.c  Обработчики прерываний.
+│   │   ├── syscalls.c      Системные вызовы для стандартной библиотеки.
+│   │   ├── sysmem.c        Управление динамической памятью.
+│   │   ├── system_stm32h7xx.c Инициализация системного тактирования.
+│   │   ├── tim.c           Инициализация таймеров.
+│   │   └── usart.c         Инициализация USART.
+│   │
+│   └── Startup - Файлы начальной загрузки MCU.
+│       └── startup_stm32h743zitx.s Стартовый файл и таблица векторов прерываний.
+├── Debug - Каталог артефактов сборки (создаётся IDE).
+│   ├── App                 Файлы сборки модуля App.
+│   ├── Core                Файлы сборки ядра проекта.
+│   ├── Drivers             Файлы сборки драйверов HAL.
+│   ├── GUI                 Файлы сборки GUI.
+│   ├── lvgl                Файлы сборки библиотеки LVGL.
+│   ├── makefile            Основной makefile проекта.
+│   ├── objects.list        Список объектных файлов.
+│   ├── objects.mk          Правила сборки объектных файлов.
+│   ├── platform            Платформенно-зависимые правила сборки.
+│   └── sources.mk          Список исходных файлов проекта.
+├── Display_v2.launch       Конфигурация запуска/отладки проекта.
+├── Drivers - Сторонние драйверы и библиотеки.
+│   ├── CMSIS               Библиотека CMSIS (описание ядра ARM и MCU).
+│   │   ├── Device          Описание конкретного семейства STM32.
+│   │   └── Include         Общие заголовки CMSIS.
+│   │
+│   └── STM32H7xx_HAL_Driver Библиотека HAL для STM32H7.
+│       ├── Inc             Заголовочные файлы HAL.
+│       └── Src             Реализация драйверов HAL.
+├── GUI - Модуль пользовательского интерфейса.
+│   ├── CMakeLists.txt      Файл сборки CMake для GUI.
+│   ├── gui.c               Реализация пользовательского интерфейса.
+│   └── gui.h               Заголовочный файл GUI.
+├── README.md               Описание проекта.
+├── STM32H743ZITX_FLASH.ld Линкерный скрипт для размещения кода во Flash.
+├── STM32H743ZITX_RAM.ld   Линкерный скрипт для выполнения из RAM.
+├── bins.ioc                Конфигурация проекта STM32CubeMX.
+├── build_pc - Каталог сборки версии проекта для ПК.
+│   ├── CMakeCache.txt      Кэш конфигурации CMake.
+│   ├── CMakeFiles          Внутренние файлы системы сборки CMake.
+│   ├── build.ninja         Файл сборки для системы Ninja.
+│   ├── cmake_install.cmake Скрипт установки CMake.
+│   └── lvgl                Скомпилированные объектные файлы библиотеки LVGL.
+│   ├── build.ninja         Файл сборки системы Ninja, автоматически
+│   │                       сгенерированный CMake. Содержит правила
+│   │                       компиляции и линковки проекта.
+│
+│   ├── cmake_install.cmake Скрипт установки, созданный CMake.
+│   │                       Используется для копирования собранных
+│   │                       файлов и библиотек в каталог установки.
+│   └── lvgl                Каталог объектных файлов, полученных
+│                           после компиляции библиотеки LVGL
+│                           для версии проекта, запускаемой на ПК.
+│   ├── CMakeFiles          Внутренние служебные файлы системы CMake,
+│   │                       содержащие информацию о процессе сборки.
+│   │   └── lvgl.dir        Каталог объектных файлов, созданных
+│   │                       при компиляции исходников библиотеки LVGL.
+│   │       └── src         Каталог объектных файлов, соответствующих
+│   │                       исходному каталогу src библиотеки LVGL.
+│   │           ├── core    Объектные файлы ядра LVGL.
+│   │           │           Реализуют базовую систему объектов,
+│   │           │           дисплеев, событий и обновления экрана.
+│   │           │   ├── lv_disp.c.obj          Реализация управления дисплеями LVGL.
+│   │           │   ├── lv_event.c.obj         Подсистема событий LVGL.
+│   │           │   ├── lv_group.c.obj         Поддержка групп объектов для ввода.
+│   │           │   ├── lv_indev.c.obj         Подсистема устройств ввода.
+│   │           │   ├── lv_indev_scroll.c.obj  Поддержка прокрутки через устройства ввода.
+│   │           │   ├── lv_obj.c.obj           Основная реализация графических объектов.
+│   │           │   ├── lv_obj_class.c.obj     Система классов объектов LVGL.
+│   │           │   ├── lv_obj_draw.c.obj      Отрисовка объектов.
+│   │           │   ├── lv_obj_pos.c.obj       Управление координатами объектов.
+│   │           │   ├── lv_obj_scroll.c.obj    Логика прокрутки объектов.
+│   │           │   ├── lv_obj_style.c.obj     Работа со стилями объектов.
+│   │           │   ├── lv_obj_style_gen.c.obj Автоматическая генерация стилей.
+│   │           │   ├── lv_obj_tree.c.obj      Управление иерархией объектов.
+│   │           │   ├── lv_refr.c.obj          Обновление экрана и перерисовка.
+│   │           │   └── lv_theme.c.obj         Подсистема тем оформления.
+│   │           ├── draw    Подсистема графического рендеринга LVGL.
+│   │           │           Содержит программные и аппаратные
+│   │           │           реализации функций отрисовки.
+│   │           │   ├── lv_draw.c.obj          Основной модуль рендеринга.
+│   │           │   ├── lv_draw_arc.c.obj      Отрисовка дуг.
+│   │           │   ├── lv_draw_img.c.obj      Отрисовка изображений.
+│   │           │   ├── lv_draw_label.c.obj    Отрисовка текста.
+│   │           │   ├── lv_draw_layer.c.obj    Работа со слоями отрисовки.
+│   │           │   ├── lv_draw_line.c.obj     Отрисовка линий.
+│   │           │   ├── lv_draw_mask.c.obj     Маскирование графики.
+│   │           │   ├── lv_draw_rect.c.obj     Отрисовка прямоугольников.
+│   │           │   ├── lv_draw_transform.c.obj Геометрические трансформации.
+│   │           │   ├── lv_draw_triangle.c.obj Отрисовка треугольников.
+│   │           │   ├── lv_img_buf.c.obj       Буфер изображений.
+│   │           │   ├── lv_img_cache.c.obj     Кэширование изображений.
+│   │           │   └── lv_img_decoder.c.obj   Декодирование изображений.
+│   │           │   ├── arm2d                 Поддержка аппаратного ускорителя ARM2D.
+│   │           │   │   └── lv_gpu_arm2d.c.obj Реализация GPU-ускорения ARM2D.
+│   │           │   ├── nxp                   Поддержка графических ускорителей NXP.
+│   │           │   │   └── vglite            Поддержка GPU VGLite.
+│   │           │   │       ├── lv_draw_vglite.c.obj
+│   │           │   │       ├── lv_draw_vglite_arc.c.obj
+│   │           │   │       ├── lv_draw_vglite_blend.c.obj
+│   │           │   │       ├── lv_draw_vglite_line.c.obj
+│   │           │   │       ├── lv_draw_vglite_rect.c.obj
+│   │           │   │       ├── lv_vglite_buf.c.obj
+│   │           │   │       └── lv_vglite_utils.c.obj
+│   │           │   ├── sw                   Программный рендерер LVGL.
+│   │           │   │   Используется если аппаратный GPU отсутствует.
+│   │           │   │   ├── lv_draw_sw.c.obj
+│   │           │   │   ├── lv_draw_sw_arc.c.obj
+│   │           │   │   ├── lv_draw_sw_blend.c.obj
+│   │           │   │   ├── lv_draw_sw_dither.c.obj
+│   │           │   │   ├── lv_draw_sw_gradient.c.obj
+│   │           │   │   ├── lv_draw_sw_img.c.obj
+│   │           │   │   ├── lv_draw_sw_layer.c.obj
+│   │           │   │   ├── lv_draw_sw_letter.c.obj
+│   │           │   │   ├── lv_draw_sw_line.c.obj
+│   │           │   │   ├── lv_draw_sw_polygon.c.obj
+│   │           │   │   ├── lv_draw_sw_rect.c.obj
+│   │           │   │   └── lv_draw_sw_transform.c.obj
+│   │           ├── extra        Дополнительные модули LVGL.
+│   │           │                Содержит виджеты, темы,
+│   │           │                дополнительные библиотеки и утилиты.
+│   │           │   ├── layouts     Реализация менеджеров компоновки интерфейса.
+│   │           │   │
+│   │           │   │   ├── flex    Flex-layout (аналог CSS Flexbox).
+│   │           │   │   └── grid    Grid-layout (табличная компоновка).
+│   │           │   ├── libs        Подключаемые внешние библиотеки.
+bmp      Поддержка изображений BMP
+png      Поддержка PNG
+gif      Поддержка анимированных GIF
+qrcode   Генерация QR-кодов
+freetype Поддержка шрифтов FreeType
+ffmpeg   Декодирование видео через FFmpeg
+sjpg     Декодирование JPEG
+│   │           │   └── widgets     Набор готовых графических компонентов интерфейса.
+animimg     Анимированное изображение
+calendar    Виджет календаря
+chart       Графики и диаграммы
+colorwheel  Выбор цвета
+imgbtn      Кнопка-изображение
+keyboard    Экранная клавиатура
+led         Индикатор LED
+list        Список элементов
+menu        Меню интерфейса
+meter       Индикаторы и шкалы
+msgbox      Диалоговое окно
+span        Расширенный текст
+spinbox     Числовой ввод
+spinner     Индикатор загрузки
+tabview     Вкладки интерфейса
+tileview    Плиточный интерфейс
+win         Оконный контейнер
+│   │           ├── font        Подсистема шрифтов LVGL.
+│   │           │              Содержит встроенные шрифты
+│   │           │              и механизмы их загрузки.
+│   │           ├── hal         Hardware Abstraction Layer LVGL.
+│   │           │              Интерфейс между LVGL и аппаратным
+│   │           │              драйвером дисплея и устройств ввода.
+lv_hal_disp.c.obj   Интерфейс драйвера дисплея
+lv_hal_indev.c.obj  Интерфейс устройств ввода
+lv_hal_tick.c.obj   Таймер системы LVGL
+│   │           ├── misc        Вспомогательные утилиты LVGL.
+│   │           │              Содержит вспомогательные структуры,
+│   │           │              алгоритмы и сервисные функции.
+lv_anim.c.obj           Система анимаций
+lv_anim_timeline.c.obj  Последовательности анимаций
+lv_area.c.obj           Работа с прямоугольными областями
+lv_async.c.obj          Асинхронные задачи
+lv_bidi.c.obj           Поддержка двунаправленного текста
+lv_color.c.obj          Работа с цветами
+lv_fs.c.obj             Файловая система LVGL
+lv_gc.c.obj             Управление памятью
+├── cat.sh          Вспомогательный shell-скрипт проекта.
+│                   Используется для просмотра или объединения
+│                   файлов (обычно для анализа кода).
+│
+├── compile_pc.sh   Скрипт сборки проекта для платформы ПК.
+│                   Запускает CMake и Ninja/Make для симуляции LVGL.
+│
+├── compile_stm32.sh Скрипт сборки прошивки для микроконтроллера STM32.
+│                    Компилирует проект с использованием ARM toolchain.
+├── cmake
+│   └── stm32_toolchain.cmake
+│       Файл toolchain для CMake.
+│       Определяет кросс-компилятор ARM GCC,
+│       параметры компиляции и линковки
+│       для микроконтроллеров STM32.
+├── lvgl                 Библиотека графического интерфейса LVGL.
+│                        Содержит исходный код GUI-движка,
+│                        виджеты, рендерер и вспомогательные модули.
+│   ├── CMakeLists.txt   Файл конфигурации сборки LVGL для CMake.
+│   ├── lv_conf.h        Пользовательская конфигурация библиотеки LVGL.
+│                        Определяет используемые функции, память,
+│                        драйверы дисплея и оптимизации.
+│   ├── lvgl.h           Главный заголовочный файл LVGL.
+│                        Подключает все основные модули библиотеки.
+│   └── src              Основной исходный код библиотеки LVGL.
+│       ├── core         Ядро библиотеки LVGL.
+│       │                Реализует систему объектов,
+│       │                дисплеев, событий и ввода.
+│       │   ├── lv_disp.c       Управление дисплеями LVGL.
+│       │   ├── lv_event.c      Подсистема обработки событий.
+│       │   ├── lv_group.c      Группировка объектов для ввода.
+│       │   ├── lv_indev.c      Интерфейс устройств ввода.
+│       │   ├── lv_obj.c        Базовая реализация графического объекта LVGL.
+│       │   ├── lv_obj_draw.c   Отрисовка объектов.
+│       │   ├── lv_obj_pos.c    Управление координатами объектов.
+│       │   ├── lv_obj_scroll.c Реализация прокрутки объектов.
+│       │   ├── lv_obj_style.c  Работа со стилями объектов.
+│       │   ├── lv_obj_tree.c   Иерархия объектов LVGL.
+│       │   ├── lv_refr.c       Обновление и перерисовка экрана.
+│       │   └── lv_theme.c      Подсистема тем оформления.
+│       ├── draw          Подсистема графического рендеринга LVGL.
+│       │                 Реализует отрисовку примитивов,
+│       │                 изображений и текста.
+│       │   ├── lv_draw.c         Основной модуль рендеринга.
+│       │   ├── lv_draw_arc.c     Отрисовка дуг.
+│       │   ├── lv_draw_img.c     Отрисовка изображений.
+│       │   ├── lv_draw_label.c   Отрисовка текстовых меток.
+│       │   ├── lv_draw_rect.c    Отрисовка прямоугольников.
+│       │   ├── lv_draw_line.c    Отрисовка линий.
+│       │   ├── lv_draw_triangle.c Отрисовка треугольников.
+│       ├── extra         Дополнительные модули LVGL.
+│       │                 Содержит расширенные виджеты,
+│       │                 темы и вспомогательные библиотеки.
+│       ├── font          Подсистема шрифтов LVGL.
+│       │                 Содержит встроенные шрифты
+│       │                 и механизмы их загрузки.
+│       ├── hal           Hardware Abstraction Layer LVGL.
+│       │                 Интерфейс между библиотекой LVGL
+│       │                 и аппаратными драйверами платформы.
+│       │   ├── lv_hal_disp.c   Интерфейс драйвера дисплея.
+│       │   ├── lv_hal_indev.c  Интерфейс устройств ввода.
+│       │   └── lv_hal_tick.c   Системный таймер LVGL.
+│       ├── misc          Вспомогательные утилиты LVGL.
+│       │                 Содержит алгоритмы, структуры данных
+│       │                 и сервисные функции библиотеки.
+│       │   ├── lv_anim.c      Подсистема анимаций.
+│       │   ├── lv_area.c      Работа с прямоугольными областями.
+│       │   ├── lv_async.c     Асинхронное выполнение задач.
+│       │   ├── lv_color.c     Работа с цветами.
+│       │   ├── lv_fs.c        Абстракция файловой системы.
+│       │   ├── lv_mem.c       Управление памятью LVGL.
+│       │   ├── lv_style.c     Система стилей интерфейса.
+│       │   ├── lv_timer.c     Таймеры LVGL.
+│       │   └── lv_utils.c     Вспомогательные функции библиотеки.
+└── platform                Платформозависимая часть проекта.
+                            Содержит реализацию портирования LVGL
+                            для различных аппаратных платформ.
+    ├── pc                  Реализация платформы для запуска
+    │                       LVGL на персональном компьютере.
+    │   ├── CMakeLists.txt  Конфигурация сборки для ПК.
+    │   ├── lv_port_pc.c    Инициализация LVGL для платформы ПК.
+    │   ├── main.h          Заголовочный файл главного модуля симулятора.
+    │   └── main_pc.cpp     Главный файл запуска GUI-симулятора LVGL.
+    └── stm32               Портирование LVGL для микроконтроллера STM32.
+        ├── CMakeLists.txt   Конфигурация сборки для STM32.
+        └── lv_port_stm32.c  Реализация интерфейса LVGL
+                             для аппаратной платформы STM32.
+
+========== Исходная структура проекта ==========================================================================================================
+.
+├── App
+│   ├── CBuf.h
+│   ├── CMakeLists.txt
+│   ├── RotaryEncoder.h
+│   ├── W9864G6KH.c
+│   ├── W9864G6KH.h
+│   ├── air_signals.h
+│   ├── app.cpp
+│   ├── app.h
+│   ├── build_time.h
+│   ├── can_messages.h
+│   ├── can_port.cpp
+│   ├── can_port.h
+│   ├── disp_bright_hal.h
+│   ├── input_hal.h
+│   ├── pres2alt.h
+│   ├── rs422_port.cpp
+│   └── rs422_port.h
+├── CMakeLists.txt
+├── Core
+│   ├── Inc
+│   │   ├── fdcan.h
+│   │   ├── fmc.h
+│   │   ├── gpio.h
+│   │   ├── i2c.h
+│   │   ├── ltdc.h
+│   │   ├── main.h
+│   │   ├── memorymap.h
+│   │   ├── spi.h
+│   │   ├── stm32h7xx_hal_conf.h
+│   │   ├── stm32h7xx_it.h
+│   │   ├── tim.h
+│   │   └── usart.h
+│   ├── Src
+│   │   ├── fdcan.c
+│   │   ├── fmc.c
+│   │   ├── gpio.c
+│   │   ├── i2c.c
+│   │   ├── ltdc.c
+│   │   ├── main.c
+│   │   ├── memorymap.c
+│   │   ├── spi.c
+│   │   ├── stm32h7xx_hal_msp.c
+│   │   ├── stm32h7xx_hal_timebase_tim.c
+│   │   ├── stm32h7xx_it.c
+│   │   ├── syscalls.c
+│   │   ├── sysmem.c
+│   │   ├── system_stm32h7xx.c
+│   │   ├── tim.c
+│   │   └── usart.c
+│   └── Startup
+│       └── startup_stm32h743zitx.s
+├── Display_v2.launch
+├── Drivers
+│   ├── CMSIS
+│   │   ├── Device
+│   │   │   └── ST
+│   │   │       └── STM32H7xx
+│   │   │           ├── Include
+│   │   │           │   ├── stm32h743xx.h
+│   │   │           │   ├── stm32h7xx.h
+│   │   │           │   └── system_stm32h7xx.h
+│   │   │           └── LICENSE.txt
+│   │   ├── Include
+│   │   │   ├── cmsis_armcc.h
+│   │   │   ├── cmsis_armclang.h
+│   │   │   ├── cmsis_armclang_ltm.h
+│   │   │   ├── cmsis_compiler.h
+│   │   │   ├── cmsis_gcc.h
+│   │   │   ├── cmsis_iccarm.h
+│   │   │   ├── cmsis_version.h
+│   │   │   ├── core_armv81mml.h
+│   │   │   ├── core_armv8mbl.h
+│   │   │   ├── core_armv8mml.h
+│   │   │   ├── core_cm0.h
+│   │   │   ├── core_cm0plus.h
+│   │   │   ├── core_cm1.h
+│   │   │   ├── core_cm23.h
+│   │   │   ├── core_cm3.h
+│   │   │   ├── core_cm33.h
+│   │   │   ├── core_cm35p.h
+│   │   │   ├── core_cm4.h
+│   │   │   ├── core_cm7.h
+│   │   │   ├── core_sc000.h
+│   │   │   ├── core_sc300.h
+│   │   │   ├── mpu_armv7.h
+│   │   │   ├── mpu_armv8.h
+│   │   │   └── tz_context.h
+│   │   └── LICENSE.txt
+│   └── STM32H7xx_HAL_Driver
+│       ├── Inc
+│       │   ├── Legacy
+│       │   │   └── stm32_hal_legacy.h
+│       │   ├── stm32h7xx_hal.h
+│       │   ├── stm32h7xx_hal_cortex.h
+│       │   ├── stm32h7xx_hal_def.h
+│       │   ├── stm32h7xx_hal_dma.h
+│       │   ├── stm32h7xx_hal_dma_ex.h
+│       │   ├── stm32h7xx_hal_exti.h
+│       │   ├── stm32h7xx_hal_fdcan.h
+│       │   ├── stm32h7xx_hal_flash.h
+│       │   ├── stm32h7xx_hal_flash_ex.h
+│       │   ├── stm32h7xx_hal_gpio.h
+│       │   ├── stm32h7xx_hal_gpio_ex.h
+│       │   ├── stm32h7xx_hal_hsem.h
+│       │   ├── stm32h7xx_hal_i2c.h
+│       │   ├── stm32h7xx_hal_i2c_ex.h
+│       │   ├── stm32h7xx_hal_ltdc.h
+│       │   ├── stm32h7xx_hal_ltdc_ex.h
+│       │   ├── stm32h7xx_hal_mdma.h
+│       │   ├── stm32h7xx_hal_nand.h
+│       │   ├── stm32h7xx_hal_nor.h
+│       │   ├── stm32h7xx_hal_pwr.h
+│       │   ├── stm32h7xx_hal_pwr_ex.h
+│       │   ├── stm32h7xx_hal_rcc.h
+│       │   ├── stm32h7xx_hal_rcc_ex.h
+│       │   ├── stm32h7xx_hal_sdram.h
+│       │   ├── stm32h7xx_hal_smbus.h
+│       │   ├── stm32h7xx_hal_smbus_ex.h
+│       │   ├── stm32h7xx_hal_spi.h
+│       │   ├── stm32h7xx_hal_spi_ex.h
+│       │   ├── stm32h7xx_hal_sram.h
+│       │   ├── stm32h7xx_hal_tim.h
+│       │   ├── stm32h7xx_hal_tim_ex.h
+│       │   ├── stm32h7xx_hal_uart.h
+│       │   ├── stm32h7xx_hal_uart_ex.h
+│       │   ├── stm32h7xx_ll_bus.h
+│       │   ├── stm32h7xx_ll_cortex.h
+│       │   ├── stm32h7xx_ll_crs.h
+│       │   ├── stm32h7xx_ll_dma.h
+│       │   ├── stm32h7xx_ll_dmamux.h
+│       │   ├── stm32h7xx_ll_exti.h
+│       │   ├── stm32h7xx_ll_fmc.h
+│       │   ├── stm32h7xx_ll_gpio.h
+│       │   ├── stm32h7xx_ll_hsem.h
+│       │   ├── stm32h7xx_ll_lpuart.h
+│       │   ├── stm32h7xx_ll_pwr.h
+│       │   ├── stm32h7xx_ll_rcc.h
+│       │   ├── stm32h7xx_ll_spi.h
+│       │   ├── stm32h7xx_ll_system.h
+│       │   ├── stm32h7xx_ll_tim.h
+│       │   ├── stm32h7xx_ll_usart.h
+│       │   └── stm32h7xx_ll_utils.h
+│       ├── LICENSE.txt
+│       └── Src
+│           ├── stm32h7xx_hal.c
+│           ├── stm32h7xx_hal_cortex.c
+│           ├── stm32h7xx_hal_dma.c
+│           ├── stm32h7xx_hal_dma_ex.c
+│           ├── stm32h7xx_hal_exti.c
+│           ├── stm32h7xx_hal_fdcan.c
+│           ├── stm32h7xx_hal_flash.c
+│           ├── stm32h7xx_hal_flash_ex.c
+│           ├── stm32h7xx_hal_gpio.c
+│           ├── stm32h7xx_hal_hsem.c
+│           ├── stm32h7xx_hal_i2c.c
+│           ├── stm32h7xx_hal_i2c_ex.c
+│           ├── stm32h7xx_hal_ltdc.c
+│           ├── stm32h7xx_hal_ltdc_ex.c
+│           ├── stm32h7xx_hal_mdma.c
+│           ├── stm32h7xx_hal_nand.c
+│           ├── stm32h7xx_hal_nor.c
+│           ├── stm32h7xx_hal_pwr.c
+│           ├── stm32h7xx_hal_pwr_ex.c
+│           ├── stm32h7xx_hal_rcc.c
+│           ├── stm32h7xx_hal_rcc_ex.c
+│           ├── stm32h7xx_hal_sdram.c
+│           ├── stm32h7xx_hal_smbus.c
+│           ├── stm32h7xx_hal_smbus_ex.c
+│           ├── stm32h7xx_hal_spi.c
+│           ├── stm32h7xx_hal_spi_ex.c
+│           ├── stm32h7xx_hal_sram.c
+│           ├── stm32h7xx_hal_tim.c
+│           ├── stm32h7xx_hal_tim_ex.c
+│           ├── stm32h7xx_hal_uart.c
+│           ├── stm32h7xx_hal_uart_ex.c
+│           └── stm32h7xx_ll_fmc.c
+├── GUI
+│   ├── CMakeLists.txt
+│   ├── gui.c
+│   └── gui.h
+├── README.md
+├── STM32H743ZITX_FLASH.ld
+├── STM32H743ZITX_RAM.ld
+├── bins.ioc
+├── cat.sh
+├── cmake
+│   └── stm32_toolchain.cmake
+├── compile_pc.sh
+├── compile_stm32.sh
+├── docs
+│   └── Структура приложения БИНС-LVGL.txt
+├── lvgl
+│   ├── CMakeLists.txt
+│   ├── lv_conf.h
+│   ├── lvgl.h
+│   └── src
+│       ├── core
+│       │   ├── lv_core.mk
+│       │   ├── lv_disp.c
+│       │   ├── lv_disp.h
+│       │   ├── lv_event.c
+│       │   ├── lv_event.h
+│       │   ├── lv_group.c
+│       │   ├── lv_group.h
+│       │   ├── lv_indev.c
+│       │   ├── lv_indev.h
+│       │   ├── lv_indev_scroll.c
+│       │   ├── lv_indev_scroll.h
+│       │   ├── lv_obj.c
+│       │   ├── lv_obj.h
+│       │   ├── lv_obj_class.c
+│       │   ├── lv_obj_class.h
+│       │   ├── lv_obj_draw.c
+│       │   ├── lv_obj_draw.h
+│       │   ├── lv_obj_pos.c
+│       │   ├── lv_obj_pos.h
+│       │   ├── lv_obj_scroll.c
+│       │   ├── lv_obj_scroll.h
+│       │   ├── lv_obj_style.c
+│       │   ├── lv_obj_style.h
+│       │   ├── lv_obj_style_gen.c
+│       │   ├── lv_obj_style_gen.h
+│       │   ├── lv_obj_tree.c
+│       │   ├── lv_obj_tree.h
+│       │   ├── lv_refr.c
+│       │   ├── lv_refr.h
+│       │   ├── lv_theme.c
+│       │   └── lv_theme.h
+│       ├── draw
+│       │   ├── arm2d
+│       │   │   ├── lv_draw_arm2d.mk
+│       │   │   ├── lv_gpu_arm2d.c
+│       │   │   └── lv_gpu_arm2d.h
+│       │   ├── lv_draw.c
+│       │   ├── lv_draw.h
+│       │   ├── lv_draw.mk
+│       │   ├── lv_draw_arc.c
+│       │   ├── lv_draw_arc.h
+│       │   ├── lv_draw_img.c
+│       │   ├── lv_draw_img.h
+│       │   ├── lv_draw_label.c
+│       │   ├── lv_draw_label.h
+│       │   ├── lv_draw_layer.c
+│       │   ├── lv_draw_layer.h
+│       │   ├── lv_draw_line.c
+│       │   ├── lv_draw_line.h
+│       │   ├── lv_draw_mask.c
+│       │   ├── lv_draw_mask.h
+│       │   ├── lv_draw_rect.c
+│       │   ├── lv_draw_rect.h
+│       │   ├── lv_draw_transform.c
+│       │   ├── lv_draw_transform.h
+│       │   ├── lv_draw_triangle.c
+│       │   ├── lv_draw_triangle.h
+│       │   ├── lv_img_buf.c
+│       │   ├── lv_img_buf.h
+│       │   ├── lv_img_cache.c
+│       │   ├── lv_img_cache.h
+│       │   ├── lv_img_decoder.c
+│       │   ├── lv_img_decoder.h
+│       │   ├── nxp
+│       │   │   ├── lv_draw_nxp.mk
+│       │   │   ├── pxp
+│       │   │   │   ├── lv_draw_nxp_pxp.mk
+│       │   │   │   ├── lv_draw_pxp.c
+│       │   │   │   ├── lv_draw_pxp.h
+│       │   │   │   ├── lv_draw_pxp_blend.c
+│       │   │   │   ├── lv_draw_pxp_blend.h
+│       │   │   │   ├── lv_gpu_nxp_pxp.c
+│       │   │   │   ├── lv_gpu_nxp_pxp.h
+│       │   │   │   ├── lv_gpu_nxp_pxp_osa.c
+│       │   │   │   └── lv_gpu_nxp_pxp_osa.h
+│       │   │   └── vglite
+│       │   │       ├── lv_draw_nxp_vglite.mk
+│       │   │       ├── lv_draw_vglite.c
+│       │   │       ├── lv_draw_vglite.h
+│       │   │       ├── lv_draw_vglite_arc.c
+│       │   │       ├── lv_draw_vglite_arc.h
+│       │   │       ├── lv_draw_vglite_blend.c
+│       │   │       ├── lv_draw_vglite_blend.h
+│       │   │       ├── lv_draw_vglite_line.c
+│       │   │       ├── lv_draw_vglite_line.h
+│       │   │       ├── lv_draw_vglite_rect.c
+│       │   │       ├── lv_draw_vglite_rect.h
+│       │   │       ├── lv_vglite_buf.c
+│       │   │       ├── lv_vglite_buf.h
+│       │   │       ├── lv_vglite_utils.c
+│       │   │       └── lv_vglite_utils.h
+│       │   ├── renesas
+│       │   │   ├── lv_draw_renesas.mk
+│       │   │   ├── lv_gpu_d2_draw_label.c
+│       │   │   ├── lv_gpu_d2_ra6m3.c
+│       │   │   └── lv_gpu_d2_ra6m3.h
+│       │   ├── sdl
+│       │   │   ├── README.md
+│       │   │   ├── lv_draw_sdl.c
+│       │   │   ├── lv_draw_sdl.h
+│       │   │   ├── lv_draw_sdl.mk
+│       │   │   ├── lv_draw_sdl_arc.c
+│       │   │   ├── lv_draw_sdl_bg.c
+│       │   │   ├── lv_draw_sdl_composite.c
+│       │   │   ├── lv_draw_sdl_composite.h
+│       │   │   ├── lv_draw_sdl_img.c
+│       │   │   ├── lv_draw_sdl_img.h
+│       │   │   ├── lv_draw_sdl_label.c
+│       │   │   ├── lv_draw_sdl_layer.c
+│       │   │   ├── lv_draw_sdl_layer.h
+│       │   │   ├── lv_draw_sdl_line.c
+│       │   │   ├── lv_draw_sdl_mask.c
+│       │   │   ├── lv_draw_sdl_mask.h
+│       │   │   ├── lv_draw_sdl_polygon.c
+│       │   │   ├── lv_draw_sdl_priv.h
+│       │   │   ├── lv_draw_sdl_rect.c
+│       │   │   ├── lv_draw_sdl_rect.h
+│       │   │   ├── lv_draw_sdl_stack_blur.c
+│       │   │   ├── lv_draw_sdl_stack_blur.h
+│       │   │   ├── lv_draw_sdl_texture_cache.c
+│       │   │   ├── lv_draw_sdl_texture_cache.h
+│       │   │   ├── lv_draw_sdl_utils.c
+│       │   │   └── lv_draw_sdl_utils.h
+│       │   ├── stm32_dma2d
+│       │   │   ├── lv_draw_stm32_dma2d.mk
+│       │   │   ├── lv_gpu_stm32_dma2d.c
+│       │   │   └── lv_gpu_stm32_dma2d.h
+│       │   ├── sw
+│       │   │   ├── lv_draw_sw.c
+│       │   │   ├── lv_draw_sw.h
+│       │   │   ├── lv_draw_sw.mk
+│       │   │   ├── lv_draw_sw_arc.c
+│       │   │   ├── lv_draw_sw_blend.c
+│       │   │   ├── lv_draw_sw_blend.h
+│       │   │   ├── lv_draw_sw_dither.c
+│       │   │   ├── lv_draw_sw_dither.h
+│       │   │   ├── lv_draw_sw_gradient.c
+│       │   │   ├── lv_draw_sw_gradient.h
+│       │   │   ├── lv_draw_sw_img.c
+│       │   │   ├── lv_draw_sw_layer.c
+│       │   │   ├── lv_draw_sw_letter.c
+│       │   │   ├── lv_draw_sw_line.c
+│       │   │   ├── lv_draw_sw_polygon.c
+│       │   │   ├── lv_draw_sw_rect.c
+│       │   │   └── lv_draw_sw_transform.c
+│       │   └── swm341_dma2d
+│       │       ├── lv_draw_swm341_dma2d.mk
+│       │       ├── lv_gpu_swm341_dma2d.c
+│       │       └── lv_gpu_swm341_dma2d.h
+│       ├── extra
+│       │   ├── README.md
+│       │   ├── layouts
+│       │   │   ├── flex
+│       │   │   │   ├── lv_flex.c
+│       │   │   │   └── lv_flex.h
+│       │   │   ├── grid
+│       │   │   │   ├── lv_grid.c
+│       │   │   │   └── lv_grid.h
+│       │   │   └── lv_layouts.h
+│       │   ├── libs
+│       │   │   ├── bmp
+│       │   │   │   ├── lv_bmp.c
+│       │   │   │   └── lv_bmp.h
+│       │   │   ├── ffmpeg
+│       │   │   │   ├── lv_ffmpeg.c
+│       │   │   │   └── lv_ffmpeg.h
+│       │   │   ├── freetype
+│       │   │   │   ├── arial.ttf
+│       │   │   │   ├── lv_freetype.c
+│       │   │   │   └── lv_freetype.h
+│       │   │   ├── fsdrv
+│       │   │   │   ├── lv_fs_fatfs.c
+│       │   │   │   ├── lv_fs_posix.c
+│       │   │   │   ├── lv_fs_stdio.c
+│       │   │   │   ├── lv_fs_win32.c
+│       │   │   │   └── lv_fsdrv.h
+│       │   │   ├── gif
+│       │   │   │   ├── gifdec.c
+│       │   │   │   ├── gifdec.h
+│       │   │   │   ├── lv_gif.c
+│       │   │   │   └── lv_gif.h
+│       │   │   ├── lv_libs.h
+│       │   │   ├── png
+│       │   │   │   ├── lodepng.c
+│       │   │   │   ├── lodepng.h
+│       │   │   │   ├── lv_png.c
+│       │   │   │   └── lv_png.h
+│       │   │   ├── qrcode
+│       │   │   │   ├── lv_qrcode.c
+│       │   │   │   ├── lv_qrcode.h
+│       │   │   │   ├── qrcodegen.c
+│       │   │   │   └── qrcodegen.h
+│       │   │   ├── rlottie
+│       │   │   │   ├── lv_rlottie.c
+│       │   │   │   └── lv_rlottie.h
+│       │   │   └── sjpg
+│       │   │       ├── lv_sjpg.c
+│       │   │       ├── lv_sjpg.h
+│       │   │       ├── tjpgd.c
+│       │   │       ├── tjpgd.h
+│       │   │       └── tjpgdcnf.h
+│       │   ├── lv_extra.c
+│       │   ├── lv_extra.h
+│       │   ├── lv_extra.mk
+│       │   ├── others
+│       │   │   ├── fragment
+│       │   │   │   ├── README.md
+│       │   │   │   ├── lv_fragment.c
+│       │   │   │   ├── lv_fragment.h
+│       │   │   │   └── lv_fragment_manager.c
+│       │   │   ├── gridnav
+│       │   │   │   ├── lv_gridnav.c
+│       │   │   │   └── lv_gridnav.h
+│       │   │   ├── ime
+│       │   │   │   ├── lv_ime_pinyin.c
+│       │   │   │   └── lv_ime_pinyin.h
+│       │   │   ├── imgfont
+│       │   │   │   ├── lv_imgfont.c
+│       │   │   │   └── lv_imgfont.h
+│       │   │   ├── lv_others.h
+│       │   │   ├── monkey
+│       │   │   │   ├── lv_monkey.c
+│       │   │   │   └── lv_monkey.h
+│       │   │   ├── msg
+│       │   │   │   ├── lv_msg.c
+│       │   │   │   └── lv_msg.h
+│       │   │   └── snapshot
+│       │   │       ├── lv_snapshot.c
+│       │   │       └── lv_snapshot.h
+│       │   ├── themes
+│       │   │   ├── basic
+│       │   │   │   ├── lv_theme_basic.c
+│       │   │   │   └── lv_theme_basic.h
+│       │   │   ├── default
+│       │   │   │   ├── lv_theme_default.c
+│       │   │   │   └── lv_theme_default.h
+│       │   │   ├── lv_themes.h
+│       │   │   └── mono
+│       │   │       ├── lv_theme_mono.c
+│       │   │       └── lv_theme_mono.h
+│       │   └── widgets
+│       │       ├── animimg
+│       │       │   ├── lv_animimg.c
+│       │       │   └── lv_animimg.h
+│       │       ├── calendar
+│       │       │   ├── lv_calendar.c
+│       │       │   ├── lv_calendar.h
+│       │       │   ├── lv_calendar_header_arrow.c
+│       │       │   ├── lv_calendar_header_arrow.h
+│       │       │   ├── lv_calendar_header_dropdown.c
+│       │       │   └── lv_calendar_header_dropdown.h
+│       │       ├── chart
+│       │       │   ├── lv_chart.c
+│       │       │   └── lv_chart.h
+│       │       ├── colorwheel
+│       │       │   ├── lv_colorwheel.c
+│       │       │   └── lv_colorwheel.h
+│       │       ├── imgbtn
+│       │       │   ├── lv_imgbtn.c
+│       │       │   └── lv_imgbtn.h
+│       │       ├── keyboard
+│       │       │   ├── lv_keyboard.c
+│       │       │   └── lv_keyboard.h
+│       │       ├── led
+│       │       │   ├── lv_led.c
+│       │       │   └── lv_led.h
+│       │       ├── list
+│       │       │   ├── lv_list.c
+│       │       │   └── lv_list.h
+│       │       ├── lv_widgets.h
+│       │       ├── menu
+│       │       │   ├── lv_menu.c
+│       │       │   └── lv_menu.h
+│       │       ├── meter
+│       │       │   ├── lv_meter.c
+│       │       │   └── lv_meter.h
+│       │       ├── msgbox
+│       │       │   ├── lv_msgbox.c
+│       │       │   └── lv_msgbox.h
+│       │       ├── span
+│       │       │   ├── lv_span.c
+│       │       │   └── lv_span.h
+│       │       ├── spinbox
+│       │       │   ├── lv_spinbox.c
+│       │       │   └── lv_spinbox.h
+│       │       ├── spinner
+│       │       │   ├── lv_spinner.c
+│       │       │   └── lv_spinner.h
+│       │       ├── tabview
+│       │       │   ├── lv_tabview.c
+│       │       │   └── lv_tabview.h
+│       │       ├── tileview
+│       │       │   ├── lv_tileview.c
+│       │       │   └── lv_tileview.h
+│       │       └── win
+│       │           ├── lv_win.c
+│       │           └── lv_win.h
+│       ├── font
+│       │   ├── korean.ttf
+│       │   ├── lv_font.c
+│       │   ├── lv_font.h
+│       │   ├── lv_font.mk
+│       │   ├── lv_font_dejavu_16_persian_hebrew.c
+│       │   ├── lv_font_fmt_txt.c
+│       │   ├── lv_font_fmt_txt.h
+│       │   ├── lv_font_loader.c
+│       │   ├── lv_font_loader.h
+│       │   ├── lv_font_montserrat_10.c
+│       │   ├── lv_font_montserrat_12.c
+│       │   ├── lv_font_montserrat_12_subpx.c
+│       │   ├── lv_font_montserrat_14.c
+│       │   ├── lv_font_montserrat_16.c
+│       │   ├── lv_font_montserrat_18.c
+│       │   ├── lv_font_montserrat_20.c
+│       │   ├── lv_font_montserrat_22.c
+│       │   ├── lv_font_montserrat_24.c
+│       │   ├── lv_font_montserrat_26.c
+│       │   ├── lv_font_montserrat_28.c
+│       │   ├── lv_font_montserrat_28_compressed.c
+│       │   ├── lv_font_montserrat_30.c
+│       │   ├── lv_font_montserrat_32.c
+│       │   ├── lv_font_montserrat_34.c
+│       │   ├── lv_font_montserrat_36.c
+│       │   ├── lv_font_montserrat_38.c
+│       │   ├── lv_font_montserrat_40.c
+│       │   ├── lv_font_montserrat_42.c
+│       │   ├── lv_font_montserrat_44.c
+│       │   ├── lv_font_montserrat_46.c
+│       │   ├── lv_font_montserrat_48.c
+│       │   ├── lv_font_montserrat_8.c
+│       │   ├── lv_font_sans10.c
+│       │   ├── lv_font_sans14.c
+│       │   ├── lv_font_sans16.c
+│       │   ├── lv_font_sans18.c
+│       │   ├── lv_font_simsun_16_cjk.c
+│       │   ├── lv_font_unscii_16.c
+│       │   ├── lv_font_unscii_8.c
+│       │   └── lv_symbol_def.h
+│       ├── hal
+│       │   ├── lv_hal.h
+│       │   ├── lv_hal.mk
+│       │   ├── lv_hal_disp.c
+│       │   ├── lv_hal_disp.h
+│       │   ├── lv_hal_indev.c
+│       │   ├── lv_hal_indev.h
+│       │   ├── lv_hal_tick.c
+│       │   └── lv_hal_tick.h
+│       ├── lv_api_map.h
+│       ├── lv_conf_internal.h
+│       ├── lv_conf_kconfig.h
+│       ├── lvgl.h
+│       ├── misc
+│       │   ├── lv_anim.c
+│       │   ├── lv_anim.h
+│       │   ├── lv_anim_timeline.c
+│       │   ├── lv_anim_timeline.h
+│       │   ├── lv_area.c
+│       │   ├── lv_area.h
+│       │   ├── lv_assert.h
+│       │   ├── lv_async.c
+│       │   ├── lv_async.h
+│       │   ├── lv_bidi.c
+│       │   ├── lv_bidi.h
+│       │   ├── lv_color.c
+│       │   ├── lv_color.h
+│       │   ├── lv_fs.c
+│       │   ├── lv_fs.h
+│       │   ├── lv_gc.c
+│       │   ├── lv_gc.h
+│       │   ├── lv_ll.c
+│       │   ├── lv_ll.h
+│       │   ├── lv_log.c
+│       │   ├── lv_log.h
+│       │   ├── lv_lru.c
+│       │   ├── lv_lru.h
+│       │   ├── lv_math.c
+│       │   ├── lv_math.h
+│       │   ├── lv_mem.c
+│       │   ├── lv_mem.h
+│       │   ├── lv_misc.mk
+│       │   ├── lv_printf.c
+│       │   ├── lv_printf.h
+│       │   ├── lv_style.c
+│       │   ├── lv_style.h
+│       │   ├── lv_style_gen.c
+│       │   ├── lv_style_gen.h
+│       │   ├── lv_templ.c
+│       │   ├── lv_templ.h
+│       │   ├── lv_timer.c
+│       │   ├── lv_timer.h
+│       │   ├── lv_tlsf.c
+│       │   ├── lv_tlsf.h
+│       │   ├── lv_txt.c
+│       │   ├── lv_txt.h
+│       │   ├── lv_txt_ap.c
+│       │   ├── lv_txt_ap.h
+│       │   ├── lv_types.h
+│       │   ├── lv_utils.c
+│       │   └── lv_utils.h
+│       └── widgets
+│           ├── lv_arc.c
+│           ├── lv_arc.h
+│           ├── lv_bar.c
+│           ├── lv_bar.h
+│           ├── lv_btn.c
+│           ├── lv_btn.h
+│           ├── lv_btnmatrix.c
+│           ├── lv_btnmatrix.h
+│           ├── lv_canvas.c
+│           ├── lv_canvas.h
+│           ├── lv_checkbox.c
+│           ├── lv_checkbox.h
+│           ├── lv_dropdown.c
+│           ├── lv_dropdown.h
+│           ├── lv_img.c
+│           ├── lv_img.h
+│           ├── lv_label.c
+│           ├── lv_label.h
+│           ├── lv_line.c
+│           ├── lv_line.h
+│           ├── lv_objx_templ.c
+│           ├── lv_objx_templ.h
+│           ├── lv_roller.c
+│           ├── lv_roller.h
+│           ├── lv_slider.c
+│           ├── lv_slider.h
+│           ├── lv_switch.c
+│           ├── lv_switch.h
+│           ├── lv_table.c
+│           ├── lv_table.h
+│           ├── lv_textarea.c
+│           ├── lv_textarea.h
+│           └── lv_widgets.mk
+├── platform
+│   ├── lv_port.h
+│   ├── pc
+│   │   ├── CMakeLists.txt
+│   │   ├── lv_port_pc.c
+│   │   ├── main.h
+│   │   └── main_pc.cpp
+│   └── stm32
+│       ├── CMakeLists.txt
+│       └── lv_port_stm32.c
+└── structure.txt
