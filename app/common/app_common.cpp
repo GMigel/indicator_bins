@@ -15,10 +15,6 @@
 #include "can_messages.h"
 #include "rs422_port.h"
 
-#ifdef PLATFORM_PC
-#include "can_stub_pc.h"
-#endif
-
 void app_on_timer()
 {
     systime = systime + 1;
