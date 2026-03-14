@@ -17,3 +17,8 @@ bool input_get_btn(void)
 {
     return (HAL_GPIO_ReadPin(ENC_BTN_GPIO_Port, ENC_BTN_Pin) == GPIO_PIN_RESET);
 }
+
+void input_poll(void)
+{
+    /* nothing needed for STM32 */
+}

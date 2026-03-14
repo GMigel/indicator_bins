@@ -11,22 +11,86 @@
 #include "RotaryEncoder.h"
 #include "gui.h"
 #include "disp_bright.h"
+#include "input_hal.h"
+#include "can_messages.h"
+#include "rs422_port.h"
+
+#ifdef PLATFORM_PC
+#include "can_stub_pc.h"
+#endif
+
+void app_on_timer()
+{
+    systime = systime + 1;
+
+    if (gui_state.mode == GUI_INIT)
+    {
+        if (systime == 500)
+            gui_state.mode = GUI_TEST;
+    }
+    else if (gui_state.mode == GUI_TEST)
+    {
+        static uint32_t test_timeout = 1000;
+        if (test_timeout == 0)
+        {
+            gui_state.mode = GUI_MAIN_MODE;
+            test_timeout = 1000;
+        }
+        else
+            test_timeout--;
+    }
+
+    input_poll();
+
+    rs422_serve();
+ //	lv_tick_inc(HAL_TICK_FREQ_DEFAULT); //ToDo
+     lv_tick_inc(1); // LVGL ожидает миллисекунды.  //ToDo
+ //    lv_tick_inc(10); // если таймер 10 ms: //ToDo
+ 	encoder.serve_input(input_get_enc(), input_get_btn());
+
+//	 #if 1
+//   static uint32_t cntr = 0;
+//   if(++cntr == 1000)
+//   {
+//   	cntr = 0;
+//   	static const can_msg_version_t version = {.timestamp=BuildTime, .maj_ver=MajVersion, .min_ver=MinVersion, .build=Build};
+//   	can_send_dat(CAN_VERSION_MFI, &version, sizeof(version));
+//   }
+// #endif
+
+    static uint32_t cntr = 0;
+    if (++cntr == 1000)
+    {
+        cntr = 0;
+
+        // Версия для CAN
+static const can_msg_version_t version =
+{
+    .timestamp = BuildTime,
+    .maj_ver   = MajVersion,
+    .min_ver   = MinVersion,
+    .build     = Build
+};
+
+can_send_dat(CAN_VERSION_MFI, &version, sizeof(version));
+    }
+}
 
 #if APP_DEBUG
-	#define debug_print rs422_printf
+    #define debug_print rs422_printf
 #else
-  #define debug_print(...)
+    #define debug_print(...)
 #endif
 
 using namespace std;
 
-void dummy_hold() {debug_print("dummy hold\r");};
-void dummy_timeout() {debug_print("dummy timeout\r");};
+void dummy_hold() { debug_print("dummy hold\r"); }
+void dummy_timeout() { debug_print("dummy timeout\r"); }
 
 #if USE_MTI_ICC
-void	icc_select(uint8_t item);
-void	bad_icc_select(uint8_t item);
-void	good_icc_select(uint8_t item);
+void icc_select(uint8_t item);
+void bad_icc_select(uint8_t item);
+void good_icc_select(uint8_t item);
 #endif
 
 RotaryEncoder::listener_t enc_brg = {brg_rotate, brg_click, brg_hold, dummy_timeout};
@@ -37,10 +101,10 @@ RotaryEncoder::listener_t enc_menu_timeless = {menu_rotate, menu_click, menu_hol
 
 #if USE_MTI_ICC
 const char* main_menu_items[] = {"ЕД. ИЗМ. ДАВЛЕНИЯ","ЕД. ИЗМ. ВЫСОТЫ", "КАЛИБРОВКА КОМПАСА", "ВЕРСИЯ"};
-gui_menu_t menu_main = {NULL, main_menu_items, 4, 0, menu_select};
+gui_menu_t menu_main = {nullptr, main_menu_items, 4, 0, menu_select};
 #else
 const char* main_menu_items[] = {"ЕД. ИЗМ. ДАВЛЕНИЯ","ЕД. ИЗМ. ВЫСОТЫ", "ВЕРСИЯ"};
-gui_menu_t menu_main = {NULL, main_menu_items, 3, 0, menu_select};
+gui_menu_t menu_main = {nullptr, main_menu_items, 3, 0, menu_select};
 #endif
 
 const char* pres_items[] = {"мм. рт. ст","гПа"};

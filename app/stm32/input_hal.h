@@ -12,6 +12,7 @@ extern "C" {
 void input_init(void);
 int8_t input_get_enc(void);
 bool input_get_btn(void);
+void input_poll(void);
 
 #ifdef __cplusplus
 #pragma GCC diagnostic pop

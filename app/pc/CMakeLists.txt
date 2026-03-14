@@ -22,17 +22,15 @@ target_link_libraries(gui
     lvgl
 )
 
+# set(APP_PC_SRC
+#     main_pc.cpp
+#     app_pc.cpp
+#     app_pc_stubs.cpp
+# )
+
 # --- PC executable ---
 add_executable(pc_sim
     main_pc.cpp
-)
-
-# --- Include PC-specific stubs ---
-target_sources(app PRIVATE
-    disp_bright.c       # <<<
-    input_sim.cpp       # <<<
-    encoder_sim.cpp     # <<<
-    app_pc_stubs.cpp    # <<<
 )
 
 target_include_directories(pc_sim PRIVATE

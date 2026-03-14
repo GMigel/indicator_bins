@@ -26,7 +26,11 @@ extern gui_menu_t menu_ver;
 
 void app_run(void);
 void app_on_timer(void);
+
+void can_init(void);
 void can_serve(void);
+// void can_send_dat(int id, const void* data, size_t len);
+bool can_send_dat(uint16_t id, const void* data, uint8_t len);
 void brg_rotate(int8_t delta);
 void brg_click();
 void brg_hold();
