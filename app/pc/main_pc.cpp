@@ -55,7 +55,7 @@ void app_run()
         if (diff >= 1)
         {
             last_tick = now;
-            app_on_timer();      // ← полностью как STM32
+            app_on_timer();
         }
 
         /* ---- main loop ---- */

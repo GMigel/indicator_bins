@@ -9,6 +9,28 @@
 #include "input_hal.h"
 #include "disp_bright.h"
 
+// Helper function: map SDL mouse wheel & button to encoder input
+static void handle_sdl_event(SDL_Event &e)
+{
+    switch(e.type)
+    {
+        case SDL_MOUSEWHEEL:
+            // SDL mouse wheel: y > 0 → scroll up, y < 0 → scroll down
+            // Map to encoder rotation delta
+            encoder.serve_input(e.wheel.y, 0);
+            break;
+
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+            // Map left mouse button to encoder click
+            if(e.button.button == SDL_BUTTON_LEFT)
+            {
+                encoder.serve_input(0, e.button.state == SDL_PRESSED ? 1 : 0);
+            }
+            break;
+    }
+}
+
 void app_run()
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
@@ -27,16 +49,17 @@ void app_run()
     {
         /* -------- SDL events -------- */
         SDL_Event e;
-        while (SDL_PollEvent(&e))
+        while(SDL_PollEvent(&e))
         {
-            if (e.type == SDL_QUIT)
+            if(e.type == SDL_QUIT)
                 return;
+
+            handle_sdl_event(e);
         }
 
         /* -------- LVGL tick -------- */
         uint32_t now = SDL_GetTicks();
         uint32_t diff = now - last_tick;
-
         if(diff > 0)
         {
             lv_tick_inc(diff);

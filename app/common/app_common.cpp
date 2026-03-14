@@ -44,16 +44,6 @@ void app_on_timer()
  //    lv_tick_inc(10); // если таймер 10 ms: //ToDo
  	encoder.serve_input(input_get_enc(), input_get_btn());
 
-//	 #if 1
-//   static uint32_t cntr = 0;
-//   if(++cntr == 1000)
-//   {
-//   	cntr = 0;
-//   	static const can_msg_version_t version = {.timestamp=BuildTime, .maj_ver=MajVersion, .min_ver=MinVersion, .build=Build};
-//   	can_send_dat(CAN_VERSION_MFI, &version, sizeof(version));
-//   }
-// #endif
-
     static uint32_t cntr = 0;
     if (++cntr == 1000)
     {
