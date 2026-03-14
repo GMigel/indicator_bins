@@ -18,4 +18,3 @@ void rs422_printf(const char* fmt,...);
 #ifdef __cplusplus
 } // extern "C"
 #endif
-

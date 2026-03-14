@@ -12,11 +12,6 @@
 #include "gui.h"
 #include "disp_bright.h"
 
-//#include "disp_bright_hal.h"
-//#include "input_hal.h"
-//#include "rs422_port.h"
-//#include "can_port.h"
-
 #if APP_DEBUG
 	#define debug_print rs422_printf
 #else
@@ -28,30 +23,11 @@ using namespace std;
 void dummy_hold() {debug_print("dummy hold\r");};
 void dummy_timeout() {debug_print("dummy timeout\r");};
 
-// void brg_rotate(int8_t delta);
-// void brg_click();
-// void brg_hold();
-
-// void ref_rotate(int8_t delta);
-// void ref_click();
-
-// void pres_rotate(int8_t delta);
-// void pres_click();
-
-// void menu_rotate(int8_t delta);
-// void menu_click();
-// void menu_hold();
-// void menu_timeout();
-// void menu_select(uint8_t item);
-// void pres_select(uint8_t item);
-// void alt_select(uint8_t item);
-// void ver_select(uint8_t item);
 #if USE_MTI_ICC
 void	icc_select(uint8_t item);
 void	bad_icc_select(uint8_t item);
 void	good_icc_select(uint8_t item);
 #endif
-// void can_serve();
 
 RotaryEncoder::listener_t enc_brg = {brg_rotate, brg_click, brg_hold, dummy_timeout};
 RotaryEncoder::listener_t enc_ref = {ref_rotate, ref_click, dummy_hold, dummy_timeout};
@@ -105,7 +81,6 @@ void brg_rotate(int8_t delta)
 }
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 void brg_click()
 {
@@ -113,7 +88,6 @@ void brg_click()
 	encoder.change_listener(enc_ref);
 }
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 void brg_hold()
@@ -123,7 +97,6 @@ void brg_hold()
 	encoder.change_listener(enc_menu);
 }
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 void ref_rotate(int8_t delta)
@@ -135,7 +108,6 @@ void ref_rotate(int8_t delta)
 		gui_state.pres_type = (gui_type_pres_t)((type_nr > 0) ? --type_nr : 2);
 }
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 void ref_click()
@@ -153,7 +125,6 @@ void ref_click()
 }
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 void pres_rotate(int8_t delta)
 {
@@ -164,7 +135,6 @@ void pres_rotate(int8_t delta)
 }
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 void pres_click()
 {
@@ -172,7 +142,6 @@ void pres_click()
 	encoder.change_listener(enc_brg);
 }
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 void menu_rotate(int8_t delta)
@@ -185,14 +154,12 @@ void menu_rotate(int8_t delta)
 }
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 void menu_click()
 {
 	gui_state.menu->on_select(gui_state.menu->curr_item);
 }
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 void menu_hold()
@@ -202,7 +169,6 @@ void menu_hold()
 }
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 void menu_timeout()
 {
@@ -210,7 +176,6 @@ void menu_timeout()
 	encoder.change_listener(enc_brg);
 }
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 void menu_select(uint8_t item)
@@ -239,7 +204,6 @@ void menu_select(uint8_t item)
 }
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 void pres_select(uint8_t item)
 {
@@ -256,7 +220,6 @@ void pres_select(uint8_t item)
 	encoder.change_listener(enc_brg);
 }
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 void alt_select(uint8_t item)
@@ -275,7 +238,6 @@ void alt_select(uint8_t item)
 }
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 void ver_select(uint8_t item)
 {
@@ -283,8 +245,6 @@ void ver_select(uint8_t item)
 	encoder.change_listener(enc_brg);
 }
 //------------------------------------------------------------------------------
-
-
 
 //------------------------------------------------------------------------------
 #if USE_MTI_ICC
@@ -307,7 +267,6 @@ void icc_select(uint8_t item)
 #endif
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 #if USE_MTI_ICC
 void bad_icc_select(uint8_t item)
@@ -317,7 +276,6 @@ void bad_icc_select(uint8_t item)
 }
 #endif
 //------------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------------
 #if USE_MTI_ICC
@@ -333,5 +291,3 @@ void good_icc_select(uint8_t item)
 }
 #endif
 //------------------------------------------------------------------------------
-
-

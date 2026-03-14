@@ -10,7 +10,6 @@ using namespace std;
 
 static map<uint8_t, uint8_t> cntrs;
 
-
 //------------------------------------------------------------------------------
 void can_init()
 {
@@ -135,7 +134,3 @@ bool can_send_val(uint16_t id, float val, bool valid)
 	return can_send_dat(id, &msg, sizeof(msg));
 }
 //------------------------------------------------------------------------------
-
-
-
-

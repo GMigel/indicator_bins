@@ -10,7 +10,6 @@ extern "C"
 #include "stdbool.h"
 #include "can_messages.h"
 
-
 enum
 {
   CAN_BUFNR_ROLL1,
