@@ -4,6 +4,8 @@
 #include "lvgl.h"
 #include "lv_port_pc.h"
 #include "gui.h"
+#include "encoder_sim.h"
+#include "app_cpp.h"
 
 extern gui_state_t gui_state;
 
@@ -31,11 +33,19 @@ int main()
     while (1)
   {
     SDL_Event e;
+
     while (SDL_PollEvent(&e))
     {
         if (e.type == SDL_QUIT)
             exit(0);
+
+        encoder_sim_handle_event(e);
     }
+
+    encoder.serve_input(
+        encoder_sim_get_enc(),
+        encoder_sim_get_btn()
+    );
 
     gui_refresh(&gui_state);
     lv_timer_handler();
@@ -43,6 +53,5 @@ int main()
 
     SDL_Delay(5);
   }
-
     return 0;
 }
