@@ -38,8 +38,12 @@ cat cat.sh
 
 echo app/common/app_common.cpp
 cat app/common/app_common.cpp
+echo app/common/app_context.h
+cat app/common/app_context.h
 echo app/common/app.h
 cat app/common/app.h
+echo app/common/app_cpp.h
+cat app/common/app_cpp.h
 echo app/pc/app_pc.cpp
 cat app/pc/app_pc.cpp
 echo app/pc/app_pc_stubs.cpp
@@ -48,3 +52,5 @@ echo app/pc/main_pc.cpp
 cat app/pc/main_pc.cpp
 echo app/stm32/app_stm32.cpp
 cat app/stm32/app_stm32.cpp
+echo app/common/RotaryEncoder.h
+cat app/common/RotaryEncoder.h

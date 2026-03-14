@@ -4,7 +4,7 @@
 static int32_t enc_value = 0;
 static bool button_pressed = false;
 
-int32_t encoder_sim_get_enc()
+int8_t encoder_sim_get_enc()
 {
     return enc_value;
 }
