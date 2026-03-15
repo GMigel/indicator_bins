@@ -17,7 +17,13 @@ public:
   //---------------------------------------------------------------------------
   RotaryEncoder(listener_t &listener) : listener(listener) {}
   //---------------------------------------------------------------------------
-  void change_listener(listener_t &new_listener) { listener = new_listener; }
+  //   void change_listener(listener_t &new_listener) { listener = new_listener; }
+  void change_listener(listener_t &new_listener) {
+    listener = new_listener;
+    hold_cntr = 0;
+    timeout_cntr = 0;
+    enc_prev = 0;
+  }
   //---------------------------------------------------------------------------
   void serve_input(int8_t enc, bool btn) {
     if (btn) {
