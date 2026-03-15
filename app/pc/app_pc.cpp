@@ -16,9 +16,6 @@ static bool btn = false;
 static void handle_sdl_event(SDL_Event &e) {
   switch (e.type) {
   case SDL_MOUSEWHEEL:
-    // SDL mouse wheel: y > 0 → scroll up, y < 0 → scroll down
-    // Map to encoder rotation delta
-    // encoder.serve_input(e.wheel.y, 0);
     enc_pos += e.wheel.y;
     break;
 
@@ -29,6 +26,20 @@ static void handle_sdl_event(SDL_Event &e) {
 
   case SDL_MOUSEBUTTONUP:
     if (e.button.button == SDL_BUTTON_MIDDLE || e.button.button == SDL_BUTTON_RIGHT)
+      btn = false;
+    break;
+
+  case SDL_KEYDOWN:
+    if (e.key.keysym.sym == SDLK_UP)
+      enc_pos++;
+    if (e.key.keysym.sym == SDLK_DOWN)
+      enc_pos--;
+    if (e.key.keysym.sym == SDLK_RETURN)
+      btn = true;
+    break;
+
+  case SDL_KEYUP:
+    if (e.key.keysym.sym == SDLK_RETURN)
       btn = false;
     break;
   }
