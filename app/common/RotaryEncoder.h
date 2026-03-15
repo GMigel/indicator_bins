@@ -5,62 +5,85 @@
 
 class RotaryEncoder {
 public:
-  using enc_handler_t = std::function<void(int8_t delta)>;
-  using btn_handler_t = std::function<void()>;
-  using tim_handler_t = std::function<void()>;
-  using listener_t = struct {
-    enc_handler_t on_rotate;
-    btn_handler_t on_click;
-    btn_handler_t on_hold;
-    tim_handler_t on_timeout;
+  struct listener_t {
+    std::function<void(int8_t)> on_rotate;
+    std::function<void()> on_click;
+    std::function<void()> on_hold;
+    std::function<void()> on_timeout;
   };
-  //---------------------------------------------------------------------------
-  RotaryEncoder(listener_t &listener) : listener(listener) {}
-  //---------------------------------------------------------------------------
-  //   void change_listener(listener_t &new_listener) { listener = new_listener; }
-  void change_listener(listener_t &new_listener) {
-    listener = new_listener;
-    hold_cntr = 0;
-    timeout_cntr = 0;
-    enc_prev = 0;
+
+  RotaryEncoder(listener_t &l) : listener(l) {}
+
+  void change_listener(listener_t &l) {
+    listener = l;
+
+    btn_prev = false;
+    hold_fired = false;
+    press_time = 0;
+    last_activity = 0;
   }
-  //---------------------------------------------------------------------------
-  void serve_input(int8_t enc, bool btn) {
-    if (btn) {
-      if (hold_cntr <= HoldThr)
-        hold_cntr++;
-      if (hold_cntr == HoldThr) {
-        btn_handler_t on_hold = listener.on_hold;
-        on_hold();
-      }
-      timeout_cntr = 0;
-    } else {
-      if ((hold_cntr > 10) && (hold_cntr < 400)) {
-        btn_handler_t on_click = listener.on_click;
-        on_click();
-        timeout_cntr = 0;
-      } else if (enc != enc_prev) {
-        enc_handler_t on_rotate = listener.on_rotate;
-        on_rotate(enc - enc_prev);
-        timeout_cntr = 0;
-      } else {
-        if (timeout_cntr <= Timeout)
-          timeout_cntr++;
-        if (timeout_cntr == Timeout) {
-          btn_handler_t on_timeout = listener.on_timeout;
-          on_timeout();
-        }
-      }
-      hold_cntr = 0;
+
+  void serve_input(int8_t delta, bool pressed, uint32_t now) {
+    /* ---------- ROTATE ---------- */
+
+    if (delta != 0) {
+      if (listener.on_rotate)
+        listener.on_rotate(delta);
+
+      last_activity = now;
     }
-    enc_prev = enc;
+
+    /* ---------- BUTTON DOWN ---------- */
+
+    if (pressed && !btn_prev) {
+      press_time = now;
+      hold_fired = false;
+    }
+
+    /* ---------- HOLD ---------- */
+
+    if (pressed && !hold_fired) {
+      if ((now - press_time) >= HoldTime) {
+        if (listener.on_hold)
+          listener.on_hold();
+
+        hold_fired = true;
+        last_activity = now;
+      }
+    }
+
+    /* ---------- BUTTON RELEASE ---------- */
+
+    if (!pressed && btn_prev) {
+      if (!hold_fired) {
+        if (listener.on_click)
+          listener.on_click();
+      }
+
+      last_activity = now;
+    }
+
+    /* ---------- TIMEOUT ---------- */
+
+    if ((now - last_activity) >= Timeout) {
+      if (listener.on_timeout)
+        listener.on_timeout();
+
+      last_activity = now;
+    }
+
+    btn_prev = pressed;
   }
-  //---------------------------------------------------------------------------
+
 private:
-  static const uint32_t HoldThr = 100;
-  static const uint32_t Timeout = 5000;
-  uint32_t timeout_cntr = 0;
-  uint32_t hold_cntr = 0;
   listener_t listener;
-  int8_t enc_prev = 0;
+
+  bool btn_prev = false;
+  bool hold_fired = false;
+
+  uint32_t press_time = 0;
+  uint32_t last_activity = 0;
+
+  static constexpr uint32_t HoldTime = 800; // ms
+  static constexpr uint32_t Timeout = 5000; // ms
 };

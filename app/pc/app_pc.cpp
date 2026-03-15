@@ -68,10 +68,14 @@ void app_run() {
       handle_sdl_event(e);
     }
     // encoder.serve_input(enc_pos, btn);
+    // static int prev = 0;
+    // int delta = enc_pos - prev;
+    // prev = enc_pos;
+    // encoder.serve_input(delta, btn);
     static int prev = 0;
     int delta = enc_pos - prev;
     prev = enc_pos;
-    encoder.serve_input(delta, btn);
+    encoder.serve_input(delta, btn, SDL_GetTicks());
 
     /* -------- LVGL tick -------- */
     uint32_t now = SDL_GetTicks();
