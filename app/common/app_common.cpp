@@ -29,10 +29,10 @@ void app_on_timer() {
     }
     break;
   case GUI_TEST:
-    if (test_timeout <= 0) {
-      gui_state.mode = GUI_MAIN_MODE;
-    } else {
+    if (test_timeout > 0) {
       test_timeout--;
+    } else {
+      gui_state.mode = GUI_MAIN_MODE;
     }
     break;
   default:
@@ -43,8 +43,8 @@ void app_on_timer() {
 
   rs422_serve();
   //	lv_tick_inc(HAL_TICK_FREQ_DEFAULT); //ToDo
-  lv_tick_inc(1); // LVGL ожидает миллисекунды.  //ToDo
-                  //    lv_tick_inc(10); // если таймер 10 ms: //ToDo
+  //  lv_tick_inc(1); // LVGL ожидает миллисекунды.  //ToDo removed because present in app_pc.cpp
+  //  lv_tick_inc(10); // если таймер 10 ms: //ToDo
   encoder.serve_input(input_get_enc(), input_get_btn());
 
   static uint32_t cntr = 0;

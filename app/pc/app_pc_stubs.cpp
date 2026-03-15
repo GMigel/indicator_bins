@@ -50,8 +50,6 @@ bool can_send_dat(uint16_t id, const void *data, const uint8_t len)
 {
   (void)data;
 
-  // printf("[PC] CAN TX id=%d len=%zu\n", id, len);
-
 #ifndef PLATFORM_PC
   printf("[PC] CAN TX id=%d len=%zu\n", id, len);
 #else
