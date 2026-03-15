@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 typedef enum {
-  GUI_INIT,
+  GUI_INIT = 0,
   GUI_TEST,
   GUI_MAIN_MODE,
   GUI_SET_PRES_REF,

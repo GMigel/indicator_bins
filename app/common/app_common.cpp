@@ -19,7 +19,7 @@ static uint32_t test_timeout = 0;
 
 void app_on_timer() {
   systime = systime + 1;
-  printf("mode %d timeout %d\n", gui_state.mode, test_timeout);
+  // printf("mode %d timeout %d\n", gui_state.mode, test_timeout);
 
   switch (gui_state.mode) {
   case GUI_INIT:
@@ -29,9 +29,7 @@ void app_on_timer() {
     }
     break;
   case GUI_TEST:
-    if (test_timeout > 0) {
-      test_timeout--;
-    } else {
+    if (test_timeout && --test_timeout == 0) {
       gui_state.mode = GUI_MAIN_MODE;
     }
     break;
