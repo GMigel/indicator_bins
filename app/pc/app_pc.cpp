@@ -3,77 +3,77 @@
 
 #include "app.h"
 #include "app_cpp.h"
-#include "gui.h"
-#include "lvgl.h"
-#include "lv_port_pc.h"
-#include "input_hal.h"
 #include "disp_bright.h"
+#include "gui.h"
+#include "input_hal.h"
+#include "lv_port_pc.h"
+#include "lvgl.h"
+
+static int enc_pos = 0;
+static bool btn = false;
 
 // Helper function: map SDL mouse wheel & button to encoder input
-static void handle_sdl_event(SDL_Event &e)
-{
-    switch(e.type)
-    {
-        case SDL_MOUSEWHEEL:
-            // SDL mouse wheel: y > 0 → scroll up, y < 0 → scroll down
-            // Map to encoder rotation delta
-            encoder.serve_input(e.wheel.y, 0);
-            break;
+static void handle_sdl_event(SDL_Event &e) {
+  switch (e.type) {
+  case SDL_MOUSEWHEEL:
+    // SDL mouse wheel: y > 0 → scroll up, y < 0 → scroll down
+    // Map to encoder rotation delta
+    // encoder.serve_input(e.wheel.y, 0);
+    enc_pos += e.wheel.y;
+    break;
 
-        case SDL_MOUSEBUTTONDOWN:
-        case SDL_MOUSEBUTTONUP:
-            // Map left mouse button to encoder click
-            if(e.button.button == SDL_BUTTON_LEFT)
-            {
-                encoder.serve_input(0, e.button.state == SDL_PRESSED ? 1 : 0);
-            }
-            break;
-    }
+  case SDL_MOUSEBUTTONDOWN:
+    if (e.button.button == SDL_BUTTON_MIDDLE || e.button.button == SDL_BUTTON_RIGHT)
+      btn = true;
+    break;
+
+  case SDL_MOUSEBUTTONUP:
+    if (e.button.button == SDL_BUTTON_MIDDLE || e.button.button == SDL_BUTTON_RIGHT)
+      btn = false;
+    break;
+  }
 }
 
-void app_run()
-{
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
+void app_run() {
+  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
 
-    lv_init();
-    lv_port_pc_init();
+  lv_init();
+  lv_port_pc_init();
 
-    gui_init(&gui_state);
-    disp_bright_init();
-    input_init();
-    can_init();
+  gui_init(&gui_state);
+  disp_bright_init();
+  input_init();
+  can_init();
 
-    uint32_t last_tick = SDL_GetTicks();
+  uint32_t last_tick = SDL_GetTicks();
 
-    while (1)
-    {
-        /* -------- SDL events -------- */
-        SDL_Event e;
-        while(SDL_PollEvent(&e))
-        {
-            if(e.type == SDL_QUIT)
-                return;
+  while (1) {
+    /* -------- SDL events -------- */
+    SDL_Event e;
+    while (SDL_PollEvent(&e)) {
+      if (e.type == SDL_QUIT)
+        return;
 
-            handle_sdl_event(e);
-        }
-
-        /* -------- LVGL tick -------- */
-        uint32_t now = SDL_GetTicks();
-        uint32_t diff = now - last_tick;
-        if(diff > 0)
-        {
-            lv_tick_inc(diff);
-            last_tick = now;
-        }
-
-        /* -------- Application -------- */
-        app_on_timer();
-
-        can_serve();
-        gui_refresh(&gui_state);
-
-        lv_timer_handler();
-
-        SDL_Delay(1);
+      handle_sdl_event(e);
     }
+    encoder.serve_input(enc_pos, btn);
+
+    /* -------- LVGL tick -------- */
+    uint32_t now = SDL_GetTicks();
+    uint32_t diff = now - last_tick;
+    if (diff > 0) {
+      lv_tick_inc(diff);
+      last_tick = now;
+    }
+
+    /* -------- Application -------- */
+    app_on_timer();
+
+    can_serve();
+    gui_refresh(&gui_state);
+
+    lv_timer_handler();
+
+    SDL_Delay(1);
+  }
 }

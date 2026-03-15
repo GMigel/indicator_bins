@@ -1,4 +1,4 @@
-#ifdef PLATFORM_PC
+// #ifdef PLATFORM_PC
 
 #define HAL_TICK_FREQ_DEFAULT 5
 
@@ -103,4 +103,4 @@ bool input_get_btn() { return btn; }
 
 } // extern "C"
 
-#endif
+// #endif
