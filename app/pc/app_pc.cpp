@@ -16,7 +16,7 @@ static bool btn = false;
 static void handle_sdl_event(SDL_Event &e) {
   switch (e.type) {
   case SDL_MOUSEWHEEL:
-    enc_pos += e.wheel.y;
+    enc_pos -= e.wheel.y;
     break;
 
   case SDL_MOUSEBUTTONDOWN:
