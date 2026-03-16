@@ -714,8 +714,8 @@ void draw_pressure(float pressure, gui_mode_t mode, gui_unit_pres_t unit) {
 #ifndef PLATFORM_PC
     sprintf(text, "%4lu.%1lu", p / 10, p % 10);
 #else
-#endif
     sprintf(text, "%4u.%u", p / 10, p % 10);
+#endif
     break;
   }
 
