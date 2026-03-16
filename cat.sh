@@ -1,7 +1,5 @@
 echo cat.sh
 cat cat.sh
-# echo CMakeLists.txt
-# cat CMakeLists.txt
 # echo lvgl/CMakeLists.txt
 # cat lvgl/CMakeLists.txt
 # echo lvgl/lv_port_stm32.c
@@ -17,9 +15,11 @@ cat cat.sh
 # cat CMakeLists.txt
 # echo app/pc/CMakeLists.txt
 # cat app/pc/CMakeLists.txt
+# cat ls app/pc/
 # ls app/pc/
-# echo app/common/CMakeLists.txt
-# cat app/common/CMakeLists.txt
+echo app/common/CMakeLists.txt
+cat app/common/CMakeLists.txt
+# cat ls app/common/
 # ls app/common/
 # echo lvgl/CMakeLists.txt
 # cat lvgl/CMakeLists.txt
@@ -36,21 +36,32 @@ cat cat.sh
 # echo gui/gui.h
 # cat gui/gui.h
 
-echo app/common/app_common.cpp
-cat app/common/app_common.cpp
-echo app/common/app_context.h
-cat app/common/app_context.h
-echo app/common/app.h
-cat app/common/app.h
-echo app/common/app_cpp.h
-cat app/common/app_cpp.h
-echo app/pc/app_pc.cpp
-cat app/pc/app_pc.cpp
+# echo app/common/app_common.cpp
+# cat app/common/app_common.cpp
+# echo app/common/app_context.h
+# cat app/common/app_context.h
+# echo app/common/app.h
+# cat app/common/app.h
+# echo app/common/app_cpp.h
+# cat app/common/app_cpp.h
+# echo app/pc/app_pc.cpp
+# cat app/pc/app_pc.cpp
+# echo app/pc/app_pc_stubs.cpp
+# cat app/pc/app_pc_stubs.cpp
+# echo app/pc/can_sim.cpp
+# cat app/pc/can_sim.cpp
+# echo app/pc/main_pc.cpp
+# cat app/pc/main_pc.cpp
+# echo app/stm32/app_stm32.cpp
+# cat app/stm32/app_stm32.cpp
+# echo app/common/RotaryEncoder.h
+# cat app/common/RotaryEncoder.h
+
+# echo app/pc/pc_input_hal.cpp
+# cat app/pc/pc_input_hal.cpp
 echo app/pc/app_pc_stubs.cpp
 cat app/pc/app_pc_stubs.cpp
-echo app/pc/main_pc.cpp
-cat app/pc/main_pc.cpp
-echo app/stm32/app_stm32.cpp
-cat app/stm32/app_stm32.cpp
-echo app/common/RotaryEncoder.h
-cat app/common/RotaryEncoder.h
+echo app/pc/pc_input_hal.cpp
+cat app/pc/pc_input_hal.cpp
+echo app/common/disp_bright.h
+cat app/common/disp_bright.h

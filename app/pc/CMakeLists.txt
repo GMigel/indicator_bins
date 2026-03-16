@@ -22,15 +22,18 @@ target_link_libraries(gui
     lvgl
 )
 
-# set(APP_PC_SRC
-#     main_pc.cpp
-#     app_pc.cpp
-#     app_pc_stubs.cpp
-# )
+set(APP_PC_SRC
+    app_pc.cpp
+    app_pc_stubs.cpp
+    encoder_sim.cpp
+    input_sim.cpp
+    pc_input_hal.cpp
+    timer_sim.cpp
+    disp_bright.c
+)
 
-# --- PC executable ---
 add_executable(pc_sim
-    main_pc.cpp
+    ${APP_PC_SRC}
 )
 
 target_include_directories(pc_sim PRIVATE

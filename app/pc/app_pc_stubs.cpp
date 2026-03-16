@@ -61,46 +61,46 @@ bool can_send_dat(uint16_t id, const void *data, const uint8_t len)
 
 // ---------------- Display brightness ----------------
 
-static uint8_t bright = 128;
+// static uint8_t bright = 128;
 
-void disp_bright_init() { printf("[PC] Display brightness init\n"); }
+// void disp_bright_init() { printf("[PC] Display brightness init\n"); }
 
-void disp_bright_set(uint8_t val) { bright = val; }
+// void disp_bright_set(uint8_t val) { bright = val; }
 
-uint8_t disp_bright_get() { return bright; }
+// uint8_t disp_bright_get() { return bright; }
 
 // ---------------- Encoder / button simulation ----------------
 
 static int8_t enc_val = 0;
 static bool btn = false;
 
-void input_init() { printf("[PC] Input init\n"); }
+// void input_init() { printf("[PC] Input init\n"); }
 
-void input_poll() {
-  /*
-   * Automatic encoder demo
-   * Slowly rotates encoder to demonstrate menus
-   */
+// void input_poll() {
+//   /*
+//    * Automatic encoder demo
+//    * Slowly rotates encoder to demonstrate menus
+//    */
 
-  static uint32_t last = 0;
+//   static uint32_t last = 0;
 
-  if (systime - last > 200) {
-    enc_val++;
-    last = systime;
-  }
+//   if (systime - last > 200) {
+//     enc_val++;
+//     last = systime;
+//   }
 
-  if (enc_val > 10)
-    enc_val = -10;
-}
+//   if (enc_val > 10)
+//     enc_val = -10;
+// }
 
-int8_t input_get_enc() {
-  int8_t v = enc_val;
-  enc_val = 0;
-  return v;
-}
+// int8_t input_get_enc() {
+//   int8_t v = enc_val;
+//   enc_val = 0;
+//   return v;
+// }
 
-bool input_get_btn() { return btn; }
+// bool input_get_btn() { return btn; }
 
 } // extern "C"
 
-// #endif
+// #endif // #ifdef PLATFORM_PC
