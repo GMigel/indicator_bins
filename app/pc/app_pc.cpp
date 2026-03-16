@@ -15,9 +15,13 @@ static bool btn = false;
 // Helper function: map SDL mouse wheel & button to encoder input
 static void handle_sdl_event(SDL_Event &e) {
   switch (e.type) {
-  case SDL_MOUSEWHEEL:
-    enc_pos -= e.wheel.y;
+  case SDL_MOUSEWHEEL: {
+    int step = e.wheel.y;
+    if (gui_state.mode == GUI_SET_PRES_VAL)
+      step = -step;
+    enc_pos -= step;
     break;
+  }
 
   case SDL_MOUSEBUTTONDOWN:
     if (e.button.button == SDL_BUTTON_MIDDLE || e.button.button == SDL_BUTTON_RIGHT)
@@ -29,14 +33,24 @@ static void handle_sdl_event(SDL_Event &e) {
       btn = false;
     break;
 
-  case SDL_KEYDOWN:
-    if (e.key.keysym.sym == SDLK_UP)
-      enc_pos--;
-    if (e.key.keysym.sym == SDLK_DOWN)
-      enc_pos++;
+  case SDL_KEYDOWN: {
+    if (e.key.keysym.sym == SDLK_UP) {
+      if (gui_state.mode == GUI_SET_PRES_VAL)
+        enc_pos++;
+      else
+        enc_pos--;
+    }
+    if (e.key.keysym.sym == SDLK_DOWN) {
+      if (gui_state.mode == GUI_SET_PRES_VAL)
+        enc_pos--;
+      else
+        enc_pos++;
+    }
     if (e.key.keysym.sym == SDLK_RETURN)
       btn = true;
+
     break;
+  }
 
   case SDL_KEYUP:
     if (e.key.keysym.sym == SDLK_RETURN)
