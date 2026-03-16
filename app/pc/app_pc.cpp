@@ -12,6 +12,11 @@
 static int enc_pos = 0;
 static bool btn = false;
 
+int main() {
+  app_run();
+  return 0;
+}
+
 // Helper function: map SDL mouse wheel & button to encoder input
 static void handle_sdl_event(SDL_Event &e) {
   switch (e.type) {
