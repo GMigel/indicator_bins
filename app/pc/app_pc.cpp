@@ -31,9 +31,9 @@ static void handle_sdl_event(SDL_Event &e) {
 
   case SDL_KEYDOWN:
     if (e.key.keysym.sym == SDLK_UP)
-      enc_pos++;
-    if (e.key.keysym.sym == SDLK_DOWN)
       enc_pos--;
+    if (e.key.keysym.sym == SDLK_DOWN)
+      enc_pos++;
     if (e.key.keysym.sym == SDLK_RETURN)
       btn = true;
     break;
