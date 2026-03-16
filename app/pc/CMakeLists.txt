@@ -27,7 +27,7 @@ set(APP_PC_SRC
     app_pc_stubs.cpp
     encoder_sim.cpp
     input_sim.cpp
-    pc_input_hal.cpp
+    pc_input.cpp
     timer_sim.cpp
     disp_bright.c
 )
