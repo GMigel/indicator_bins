@@ -64,6 +64,16 @@ static void handle_sdl_event(SDL_Event &e) {
   }
 }
 
+// void tick_inc(void) {
+//   /* -------- LVGL tick -------- */
+//   uint32_t now = SDL_GetTicks();
+//   uint32_t diff = now - last_tick;
+//   if (diff > 0) {
+//     lv_tick_inc(diff);
+//     last_tick = now;
+//   }
+// }
+
 void app_run() {
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
 
@@ -112,6 +122,7 @@ void app_run() {
 
     lv_timer_handler();
 
+    // ick_inc();
     SDL_Delay(1);
   }
 }
