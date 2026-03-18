@@ -88,3 +88,10 @@ constexpr std::uint32_t compile_time_to_unix(std::string_view date, std::string_
 
 constexpr uint32_t BuildTime = compile_time_to_unix(__DATE__, __TIME__);
 
+//--- build_time.h ---------------------------------------------------------------------------
+// #pragma once
+// #include <cstdint>
+// #include <string_view>
+// std::uint32_t compile_time_to_unix(std::string_view date,
+//                                    std::string_view time);
+// extern std::uint32_t BuildTime;
