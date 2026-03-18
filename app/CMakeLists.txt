@@ -1,7 +1,7 @@
 add_library(app STATIC
     common/app_common.cpp
-    # common/build_time.cpp
     common/pres2alt.cpp
+    common/RotaryEncoder.cpp
 )
 
 target_include_directories(app PUBLIC
