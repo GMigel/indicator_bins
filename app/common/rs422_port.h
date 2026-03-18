@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __cplusplus
-#include "../common/CBuf.h"
+#include <cbuf.h>
 namespace rs422
 {
 	extern CBuf<uint8_t, 10> buf_in;

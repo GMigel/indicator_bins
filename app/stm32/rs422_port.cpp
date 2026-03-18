@@ -1,9 +1,9 @@
+#include <cbuf.h>
 #include "rs422_port.h"
 
 #include <cstdarg>
 #include <cstdio>
 
-#include "../common/CBuf.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wvolatile"
