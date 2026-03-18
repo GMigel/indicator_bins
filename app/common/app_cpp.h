@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RotaryEncoder.h"
+#include "rotary_encoder.h"
 
 extern RotaryEncoder encoder;
 

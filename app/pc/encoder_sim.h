@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RotaryEncoder.h"
+#include "rotary_encoder.h"
 #pragma once
 #include <SDL2/SDL.h>
 #include <stdint.h>

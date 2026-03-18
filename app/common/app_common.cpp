@@ -6,7 +6,7 @@
 #include <math.h>
 #include <stdint.h>
 
-#include "RotaryEncoder.h"
+#include "rotary_encoder.h"
 #include "air_signals.h"
 #include "build_time.h"
 #include "can_messages.h"
