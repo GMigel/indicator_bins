@@ -118,9 +118,9 @@ int main(void) {
   MX_I2C4_SMBUS_Init();
   MX_FDCAN2_Init();
   MX_SPI2_Init();
-  MX_TIM2_Init();
-  MX_TIM4_Init();
-  MX_TIM12_Init();
+  MX_TIM2_Init();  // TIM2 into quadrature encoder interface mode
+  MX_TIM4_Init();  // TIM4 PWM frequency = 23.4375 kHz
+  MX_TIM12_Init(); // Up-counting mode + PWM generation mode 23.4375 kHz
   /* USER CODE BEGIN 2 */
 
   HAL_GPIO_WritePin(DISP_RST_GPIO_Port, DISP_RST_Pin, GPIO_PIN_SET); // disable display's reset
@@ -358,7 +358,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   }
   /* USER CODE BEGIN Callback 1 */
   if (sys_ready) {
-    // lv_tick_inc(HAL_TICK_FREQ_DEFAULT);
+    lv_tick_inc(HAL_TICK_FREQ_DEFAULT);
     lv_tick_inc(1);
     app_on_timer();
   }
