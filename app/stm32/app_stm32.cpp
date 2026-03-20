@@ -88,6 +88,9 @@ void can_serve() {
   }
 
   // roll
+  int a = systime - rx_time[CAN_BUFNR_ROLL1];
+  int b = systime - rx_time[CAN_BUFNR_ROLL2];
+  (void)a;(void)b;
   if (((systime - rx_time[CAN_BUFNR_ROLL1]) < ATTITUDE_TIMEOUT) ||
       ((systime - rx_time[CAN_BUFNR_ROLL2]) < ATTITUDE_TIMEOUT)) {
     gui_state.valid_roll = true;
@@ -99,6 +102,9 @@ void can_serve() {
     gui_state.valid_roll = false;
 
   // pitch
+  int c = systime - rx_time[CAN_BUFNR_PITCH1];
+  int d = systime - rx_time[CAN_BUFNR_PITCH2];
+  (void)c;(void)d;
   if (((systime - rx_time[CAN_BUFNR_PITCH1]) < ATTITUDE_TIMEOUT) ||
       ((systime - rx_time[CAN_BUFNR_PITCH2]) < ATTITUDE_TIMEOUT)) {
     gui_state.valid_pitch = true;
@@ -110,6 +116,9 @@ void can_serve() {
     gui_state.valid_pitch = false;
 
   // heading
+  int e = systime - rx_time[CAN_BUFNR_HEADING1];
+  int f = systime - rx_time[CAN_BUFNR_HEADING2];
+  (void)e;(void)f;
   if (((systime - rx_time[CAN_BUFNR_HEADING1]) < ATTITUDE_TIMEOUT) ||
       ((systime - rx_time[CAN_BUFNR_HEADING2]) < ATTITUDE_TIMEOUT)) {
     gui_state.valid_heading = true;
@@ -121,6 +130,9 @@ void can_serve() {
     gui_state.valid_heading = false;
 
   // altitude
+  int g = systime - rx_time[CAN_BUFNR_PRES1];
+  int h = systime - rx_time[CAN_BUFNR_PRES2];
+  (void)g;(void)h;
   if (((systime - rx_time[CAN_BUFNR_PRES1]) < AIR_TIMEOUT) ||
       ((systime - rx_time[CAN_BUFNR_PRES2]) < AIR_TIMEOUT)) {
     gui_state.valid_altitude = true;
@@ -136,6 +148,9 @@ void can_serve() {
     gui_state.valid_altitude = false;
 
   // airspeed
+  int i = systime - rx_time[CAN_BUFNR_AIRSPEED1];
+  int j = systime - rx_time[CAN_BUFNR_AIRSPEED2];
+  (void)i;(void)j;
   if (((systime - rx_time[CAN_BUFNR_AIRSPEED1]) < AIR_TIMEOUT) ||
       ((systime - rx_time[CAN_BUFNR_AIRSPEED2]) < AIR_TIMEOUT)) {
     gui_state.valid_speed = true;
@@ -147,6 +162,9 @@ void can_serve() {
     gui_state.valid_speed = false;
 
   // vertspeed
+  int k = systime - rx_time[CAN_BUFNR_VERTSPEED1];
+  int l = systime - rx_time[CAN_BUFNR_VERTSPEED2];
+  (void)k;(void)l;
   if (((systime - rx_time[CAN_BUFNR_VERTSPEED1]) < AIR_TIMEOUT) ||
       ((systime - rx_time[CAN_BUFNR_VERTSPEED2]) < AIR_TIMEOUT)) {
     gui_state.valid_ver_speed = true;
